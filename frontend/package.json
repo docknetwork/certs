@@ -33,12 +33,10 @@
     "react-material-ui-form-validator": "^2.1.1",
     "react-reveal": "^1.2.2",
     "react-transition-group": "^4.4.1",
-    "recharts": "^1.8.5",
-    "styled-components": "^4.3.2"
+    "recharts": "^1.8.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",

@@ -14,29 +14,9 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 
-import styled from 'styled-components';
-
 import { logout } from '../helpers/auth';
 
-const NavLink = styled.a`
-  margin-left: 20px;
-  transition: all 0.2s ease-in-out;
-
-  &,
-  &:active,
-  &:visited {
-    color: rgba(0, 0, 0, 0.6);
-    text-decoration: none;
-
-    &.active {
-      color: #1B76E9;
-    }
-  }
-
-  &:hover {
-    color: rgba(0, 0, 0, 1.0);
-  }
-`;
+const isServer = () => typeof window === 'undefined';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -54,6 +34,28 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+  },
+  navLinkActive: {
+    color: '#1B76E9',
+    textDecoration: 'none',
+    transition: 'all 0.2s ease-in-out',
+    marginLeft: '20px',
+  },
+  navLink: {
+    marginLeft: '20px',
+    textDecoration: 'none',
+    transition: 'all 0.2s ease-in-out',
+    '&:active': {
+      color: 'rgba(0, 0, 0, 0.6)',
+      textDecoration: 'none',
+    },
+    '&:visited': {
+      color: 'rgba(0, 0, 0, 0.6)',
+      textDecoration: 'none',
+    },
+    '&:hover': {
+      color: 'rgba(0, 0, 0, 1.0)',
+    }
   },
   search: {
     position: 'relative',
@@ -234,9 +236,9 @@ export default function IssuerHeader({ user, updateUser }) {
       <nav className={classes.sectionDesktop}>
         {authLinks.map((link) => (
           <Link href={link.href} passHref key={link.href}>
-            <NavLink className={link.href === router.pathname && 'active'}>
+            <a className={!isServer() && link.href === router.pathname ? classes.navLinkActive : classes.navLink}>
               {link.text}
-            </NavLink>
+            </a>
           </Link>
         ))}
       </nav>
@@ -295,9 +297,9 @@ export default function IssuerHeader({ user, updateUser }) {
       <nav className={classes.sectionDesktop}>
         {unauthLinks.map((link) => (
           <Link href={link.href} passHref key={link.href}>
-            <NavLink className={link.href === router.pathname && 'active'}>
+            <a className={!isServer() && link.href === router.pathname ? classes.navLinkActive : classes.navLink}>
               {link.text}
-            </NavLink>
+            </a>
           </Link>
         ))}
       </nav>

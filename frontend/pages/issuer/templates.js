@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import EditIcon from '@material-ui/icons/Edit';
 import AuthWrapper from '../../components/auth/wrapper';
 import Table from '../../components/table';
 import { getTemplates } from '../../services/user';
@@ -63,23 +64,23 @@ export default function IssuerTemplates() {
     }
   }
 
-  // const actions = [{
-  //   icon: (
-  //     <EditIcon />
-  //   ),
-  //   label: 'Edit',
-  //   onClick(row) {
-  //     // TODO: open template editor
-  //   },
-  // }, {
-  //   icon: (
-  //     <CardMembershipIcon />
-  //   ),
-  //   label: 'Issue with template',
-  //   onClick(row) {
-  //     // TODO
-  //   },
-  // }];
+  const actions = [{
+    icon: (
+      <EditIcon />
+    ),
+    label: 'Edit',
+    onClick(row) {
+      // TODO: open template editor
+    },
+  }/*, {
+    icon: (
+      <CardMembershipIcon />
+    ),
+    label: 'Issue with template',
+    onClick(row) {
+      // TODO
+    },
+  }*/];
 
   const tableHeaderAction = (
     <Button variant="contained" color="primary" onClick={handleShowTemplate} style={{ marginLeft: 'auto' }}>
@@ -97,7 +98,7 @@ export default function IssuerTemplates() {
     <AuthWrapper showLoad={!state.templates}>
       {state.templates && (
         state.templates.length > 0 ? (
-          <Table headerAction={tableHeaderAction} rows={state.templates} title="Templates" headers={headCells} />
+          <Table actions={actions} headerAction={tableHeaderAction} rows={state.templates} title="Templates" headers={headCells} />
         ) : (
           <>
             <Typography variant="h5">Templates</Typography>
