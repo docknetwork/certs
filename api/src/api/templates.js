@@ -18,6 +18,20 @@ export default ({ config, db }) => resource({
     }
 	},
 
+	async update(req, res) {
+    const user = await getUser(req);
+    const body = req.body;
+    const creator = user._id;
+    try {
+      await CredentialTemplate.findOneAndUpdate({ _id: req.params.template, creator }, {
+        ...body,
+      }, {upsert: true});
+  		res.send({ done: true });
+    } catch (e) {
+      next(e);
+    }
+	},
+
 	async create(req, res, next) {
     const user = await getUser(req);
     const body = req.body;

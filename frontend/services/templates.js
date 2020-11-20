@@ -1,4 +1,4 @@
-import { apiPost } from './api';
+import { apiPost, apiPut } from './api';
 
 export const testTemplate = {
   name: '',
@@ -51,6 +51,11 @@ export async function getTemplate() {
 }
 
 export async function saveTemplate(data) {
-  const result = await apiPost('template', data);
+  let result;
+  if (data._id) {
+    result = await apiPut('template/' + data._id, data);
+  } else {
+    result = await apiPost('template', data);
+  }
   return result;
 }

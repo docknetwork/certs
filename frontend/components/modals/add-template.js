@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -182,13 +182,20 @@ const defaultTemplates = [{
   disabled: true,
 }];
 
-export default function AddTemplateModal(props) {
+export default function AddTemplateModal({ onClose, open, template }) {
   const classes = useStyles();
-  const [credential, setCredential] = useState();
+  const [credential, setCredential] = useState(template);
   const snackbar = useCustomSnackbar();
+  console.log('template,', template);
+
+  useEffect(() => {
+    if (!credential) {
+      setCredential(template);
+    }
+  }, [template]);
 
   function handleClose() {
-    props.onClose();
+    onClose();
     setCredential(null);
   }
 
@@ -198,8 +205,12 @@ export default function AddTemplateModal(props) {
 
   async function handleSave() {
     const savedTemplate = await saveTemplate(credential);
-    props.onClose(savedTemplate);
-    snackbar.showSuccess('New template created');
+    onClose(savedTemplate);
+    if (credential._id) {
+      snackbar.showSuccess('Template saved');
+    } else {
+      snackbar.showSuccess('New template created');
+    }
   }
 
   const modalHeader = (
@@ -221,7 +232,7 @@ export default function AddTemplateModal(props) {
   );
 
   return (
-    <Dialog title={modalHeader} maxWidth="xl" fullScreenBreakpoint="xl" open={props.open}>
+    <Dialog title={modalHeader} maxWidth="xl" fullScreenBreakpoint="xl" open={open}>
       {credential ? (
         <Grid container spacing={3}>
           <TemplateFieldEdit state={credential} setState={setCredential} />

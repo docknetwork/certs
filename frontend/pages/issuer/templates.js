@@ -12,6 +12,7 @@ import { getTemplates } from '../../services/user';
 import EmptyHero from '../../components/misc/hero';
 
 const AddTemplateModal = dynamic(() => import('../../components/modals/add-template'));
+const EditTemplateModal = dynamic(() => import('../../components/modals/add-template'));
 
 function templateToRow(template) {
   return {
@@ -38,6 +39,7 @@ const headCells = [
 export default function IssuerTemplates() {
   const [state, setState] = useState({});
   const [showTemplate, setShowTemplate] = useState(false);
+  const [editTemplate, setShowEditTemplate] = useState(false);
 
   async function loadTemplates() {
     const templates = await getTemplates();
@@ -52,6 +54,17 @@ export default function IssuerTemplates() {
   useEffect(() => {
     loadTemplates();
   }, []);
+
+  function handleShowEditTemplate(template) {
+    setShowEditTemplate(template);
+  }
+
+  function handleCloseTemplateEdit(template) {
+    setShowEditTemplate(false);
+    if (template && template._id) {
+      loadTemplates();
+    }
+  }
 
   function handleShowTemplate() {
     setShowTemplate(true);
@@ -70,7 +83,7 @@ export default function IssuerTemplates() {
     ),
     label: 'Edit',
     onClick(row) {
-      // TODO: open template editor
+      handleShowEditTemplate(row);
     },
   }/*, {
     icon: (
@@ -115,6 +128,7 @@ export default function IssuerTemplates() {
       )}
 
       <AddTemplateModal onClose={handleCloseTemplate} open={showTemplate} />
+      <EditTemplateModal onClose={handleCloseTemplateEdit} open={!!editTemplate} template={editTemplate} />
     </AuthWrapper>
   );
 }
