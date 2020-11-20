@@ -32,7 +32,7 @@
   "author": "Jason Miller <jason@developit.ca>",
   "license": "MIT",
   "dependencies": {
-    "@docknetwork/sdk": "^0.3.7",
+    "@docknetwork/sdk": "^0.3.9",
     "@hapi/iron": "^6.0.0",
     "@magic-sdk/admin": "^1.2.2",
     "aws-sdk": "^2.793.0",
