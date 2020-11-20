@@ -2,11 +2,12 @@ import { apiPost, apiPut } from './api';
 
 export const testTemplate = {
   name: '',
+  type: 'UniversityDegreeCredential',
   fields: [{
     type: 'h4',
     gutter: true,
     default: 'University of Basel',
-    label: 'title',
+    label: 'Title',
     jsonField: 'alumniOf',
   }, {
     type: 'body2',

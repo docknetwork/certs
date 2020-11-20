@@ -8,6 +8,7 @@ delete mongoose.connection.models['Template'];
 
 const TemplateSchema = new Schema({
   name: { type: String, required: true },
+  type: { type: String, required: true },
   description: { type: String, required: false },
   fields: { type: Array, required: true },
   created: { type: Date, default: Date.now },
