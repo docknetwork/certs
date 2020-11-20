@@ -127,7 +127,7 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
     if (subjectFields) {
       for (let i = 0; i < subjectFields.length; i++) {
         const field = subjectFields[i];
-        tSubject[field.jsonField] = field.value;
+        tSubject[field.jsonField] = field.value.replace('{name}', receiver.name);
       }
     }
 
