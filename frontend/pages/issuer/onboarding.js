@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sectors = ['My sector'];
+const sectors = ['Education', 'Enterprise Systems', 'Financial', 'Government', 'Health Care', 'HR / Workforce', 'Information Technology', 'Licensing', 'Supply Chain', 'Other'];
 
 const nodeAddress = process.env.NEXT_PUBLIC_WSS_NODE_ADDR;
 
