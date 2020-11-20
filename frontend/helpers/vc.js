@@ -65,7 +65,7 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
     });
 
     const tSubject = {
-      id: receiver.did || undefined,
+      id: receiver.did || receiver._id,
       name: receiver.name,
       referenceId: receiver._id,
     };
