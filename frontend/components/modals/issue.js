@@ -293,7 +293,10 @@ export default function IssueModal(props) {
 
   const steps = ['Add recipient', 'Sign & Issue'];
 
-  const verifiableCredential = dataToVC(did && did.id, data.receiverCurrent, user, new Date(), new Date(), template);
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
+  const verifiableCredential = dataToVC(did && did.id, data.receiverCurrent, user, new Date(), oneYearFromNow, template);
   const credentialJSON = verifiableCredential && verifiableCredential.toJSON();
 
   const savedDIDs = getSavedDIDs();
