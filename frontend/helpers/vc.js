@@ -43,7 +43,7 @@ export async function registerNewDIDUsingPair(did, pair) {
   return dock.did.new(did, keyDetail, false);
 }
 
-export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDate) {
+export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDate, template) {
   // Hardcoded context/type for current one template we support
   const credentialContext = 'https://www.w3.org/2018/credentials/examples/v1';
   const credentialType = 'AlumniCredential';
@@ -55,16 +55,29 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
 
   // Assign recipient as subject
   if (receiver) {
-    credential.addSubject({ // TODO: update this json to reflect template values
-      // standard receiver fields
-      id: receiver.did || receiver._id,
+    const subjectFields = template && template.fields.map(field => {
+      return field.jsonField && {
+        jsonField: field.jsonField,
+        value: field.default,
+      }
+    }).filter(element => {
+      return element !== undefined;
+    });
+
+    const tSubject = {
+      id: receiver.did || undefined,
       name: receiver.name,
       referenceId: receiver._id,
+    };
 
-      // template specific fields
-      // TODO: populate per template somehow
-      alumniOf: issuer.entityName,
-    });
+    if (subjectFields) {
+      for (let i = 0; i < subjectFields.length; i++) {
+        const field = subjectFields[i];
+        tSubject[field.jsonField] = field.value;
+      }
+    }
+
+    credential.addSubject(tSubject);
   }
   credential.setIssuanceDate(typeof issuanceDate.toISOString === 'function' ? issuanceDate.toISOString() : issuanceDate);
   credential.setExpirationDate(typeof expirationDate.toISOString === 'function' ? expirationDate.toISOString() : expirationDate);

@@ -7,6 +7,7 @@ export const testTemplate = {
     gutter: true,
     default: 'University of Basel',
     label: 'title',
+    jsonField: 'alumniOf',
   }, {
     type: 'body2',
     gutter: true,
@@ -29,6 +30,7 @@ export const testTemplate = {
     dynamic: true,
     default: 'Bachelor of Science',
     label: 'Degree name',
+    jsonField: 'degree',
   }, {
     type: 'body2',
     gutter: true,

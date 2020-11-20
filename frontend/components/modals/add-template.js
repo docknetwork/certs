@@ -186,7 +186,6 @@ export default function AddTemplateModal({ onClose, open, template }) {
   const classes = useStyles();
   const [credential, setCredential] = useState(template);
   const snackbar = useCustomSnackbar();
-  console.log('template,', template);
 
   useEffect(() => {
     if (!credential) {
