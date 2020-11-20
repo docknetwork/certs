@@ -35,7 +35,7 @@ export default ({ config, db }) => resource({
     try {
       const query = Credential.find({
         creator,
-      }).sort({created: 'desc'}).populate('template').populate('receiver').skip(parseInt(offset)).limit(parseInt(limit));
+      }).sort({created: 'desc'}).skip(parseInt(offset)).limit(parseInt(limit));
       const result = await query.exec();
       res.send(result);
     } catch (e) {

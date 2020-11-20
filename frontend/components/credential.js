@@ -12,7 +12,7 @@ import Fade from 'react-reveal/Fade';
 import moment from 'moment';
 
 import ErrorIcon from '@material-ui/icons/Error';
-import CredentialDisplay from './credential-display';
+import CredentialDisplayJSON from './credential-json-display';
 
 import { getCredential } from '../services/credentials';
 import { verifyVC } from '../helpers/vc';
@@ -139,11 +139,14 @@ export default function Credential({ id, cachedCredential, setVC }) {
 
     for (let i = 0; i < keys.length; i++) {
       const k = keys[i];
+      if (!credentialData[k]) {
+        continue;
+      }
       const value = typeof credentialData[k].getMonth === 'function'
         ? moment(credentialData[k]).format('MMMM Do, YYYY') : credentialData[k].toString();
       if (value) {
         fields.push((
-          <>
+          <React.Fragment key={i}>
             <Typography variant="caption" gutterBottom className={classes.infoTitle}>
               {infoTitles[k]}
             </Typography>
@@ -151,7 +154,7 @@ export default function Credential({ id, cachedCredential, setVC }) {
               {value}
             </Typography>
             <br />
-          </>
+          </React.Fragment>
         ));
       }
     }
@@ -184,7 +187,7 @@ export default function Credential({ id, cachedCredential, setVC }) {
                     </Paper>
                   ) : (
                     <Paper elevation={10} className={classes.scaleCredWrapper}>
-                      <CredentialDisplay schema={credential.template} receiver={{
+                      <CredentialDisplayJSON credential={credential.credential} schema={credential.template} receiver={{
                         receiverName: credentialData.recipientName,
                       }} date={credentialData.issuanceDate} />
                     </Paper>

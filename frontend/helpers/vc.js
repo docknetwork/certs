@@ -8,6 +8,7 @@ import { DockResolver, UniversalResolver, MultiResolver } from '@docknetwork/sdk
 import { getPublicKeyFromKeyringPair } from '@docknetwork/sdk/utils/misc';
 
 import { getChainAccounts } from '../services/chain';
+import b58 from 'bs58';
 
 // Setup resolvers
 const resolvers = {
@@ -43,10 +44,64 @@ export async function registerNewDIDUsingPair(did, pair) {
   return dock.did.new(did, keyDetail, false);
 }
 
+import { u8aToString, stringToU8a } from '@polkadot/util';
+
+const fieldTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'button', 'caption', 'overline'];
+
+export function templateFieldsToRef(template) {
+  const result = [];
+
+  for (let i = 0; i < template.fields.length; i++) {
+    const field = template.fields[i];
+    const fieldType = fieldTypes.indexOf(field.type);
+    const fieldGutter = field.gutter ? 1 : 0;
+    const value = field.jsonField ? `{${field.jsonField}}` : field.default;
+    if (value.length >= 255) {
+      throw new Error('Field value too long, max length 255, got length: ' + value.length);
+    }
+
+    const fieldValue = stringToU8a(value);
+
+    result.push(...[
+      fieldType,
+      fieldGutter,
+      fieldValue.length,
+      ...fieldValue,
+    ]);
+  }
+
+  return b58.encode(result);
+}
+
+export function fieldsRefToTemplate(ref) {
+  const decoded = b58.decode(ref);
+  const fields = [];
+
+  let i = 0;
+  let x = 0;
+  for (i = 0; i < decoded.length; i++) {
+    const fieldType = decoded[i + 0];
+    const fieldGutter = decoded[i + 1];
+    const fieldValueLength = decoded[i + 2];
+    const valueBytes = decoded.slice(i + 3, i + 3 + fieldValueLength);
+
+    fields.push({
+      value: u8aToString(valueBytes),
+      type: fieldTypes[fieldType],
+      gutter: !!fieldGutter,
+    });
+
+    i += fieldValueLength + 2;
+    x++;
+  }
+
+  return fields;
+}
+
 export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDate, template) {
   // Hardcoded context/type for current one template we support
   const credentialContext = 'https://www.w3.org/2018/credentials/examples/v1';
-  const credentialType = 'AlumniCredential';
+  const credentialType = template && template.type || 'UniversityDegreeCredential';
 
   // Create VC object
   const credential = new VerifiableCredential();
@@ -54,7 +109,7 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
   credential.addType(credentialType);
 
   // Assign recipient as subject
-  if (receiver) {
+  if (template && receiver) {
     const subjectFields = template && template.fields.map(field => {
       return field.jsonField && {
         jsonField: field.jsonField,
@@ -65,10 +120,13 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
     });
 
     const tSubject = {
-      id: receiver.did || receiver._id,
       name: receiver.name,
-      referenceId: receiver._id,
+      referenceId: templateFieldsToRef(template),
     };
+
+    if (receiver.did) {
+      tSubject.id = receiver.did;
+    }
 
     if (subjectFields) {
       for (let i = 0; i < subjectFields.length; i++) {

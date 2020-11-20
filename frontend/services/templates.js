@@ -20,6 +20,7 @@ export const testTemplate = {
     dynamic: true,
     default: '{name}',
     label: 'Display Name',
+    jsonField: 'name',
   }, {
     type: 'body2',
     gutter: true,

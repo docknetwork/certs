@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import { Ring } from 'react-awesome-spinners';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Router from 'next/router';
 
 import Fade from 'react-reveal/Fade';
@@ -35,7 +35,7 @@ export default function AuthWrapper({ children, showLoad }) {
     <Container maxWidth="lg" className={classes.container}>
       {(isServer() || showLoad) ? (
         <div className={classes.loaderWrapper}>
-          <Ring />
+          <CircularProgress />
         </div>
       ) : (
         <Fade>
