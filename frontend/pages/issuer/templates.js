@@ -85,7 +85,7 @@ export default function IssuerTemplates() {
     onClick(row) {
       handleShowEditTemplate(row);
     },
-  }/*, {
+  }, /* , {
     icon: (
       <CardMembershipIcon />
     ),
@@ -93,7 +93,7 @@ export default function IssuerTemplates() {
     onClick(row) {
       // TODO
     },
-  }*/];
+  } */];
 
   const tableHeaderAction = (
     <Button variant="contained" color="primary" onClick={handleShowTemplate} style={{ marginLeft: 'auto' }}>

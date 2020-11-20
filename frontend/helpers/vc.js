@@ -7,8 +7,10 @@ import { DockResolver, UniversalResolver, MultiResolver } from '@docknetwork/sdk
 
 import { getPublicKeyFromKeyringPair } from '@docknetwork/sdk/utils/misc';
 
-import { getChainAccounts } from '../services/chain';
 import b58 from 'bs58';
+
+import { u8aToString, stringToU8a } from '@polkadot/util';
+import { getChainAccounts } from '../services/chain';
 
 // Setup resolvers
 const resolvers = {
@@ -44,8 +46,6 @@ export async function registerNewDIDUsingPair(did, pair) {
   return dock.did.new(did, keyDetail, false);
 }
 
-import { u8aToString, stringToU8a } from '@polkadot/util';
-
 const fieldTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'button', 'caption', 'overline'];
 
 export function templateFieldsToRef(template) {
@@ -57,7 +57,7 @@ export function templateFieldsToRef(template) {
     const fieldGutter = field.gutter ? 1 : 0;
     const value = field.jsonField ? `{${field.jsonField}}` : field.default;
     if (value.length >= 255) {
-      throw new Error('Field value too long, max length 255, got length: ' + value.length);
+      throw new Error(`Field value too long, max length 255, got length: ${value.length}`);
     }
 
     const fieldValue = stringToU8a(value);
@@ -110,14 +110,10 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
 
   // Assign recipient as subject
   if (template && receiver) {
-    const subjectFields = template && template.fields.map(field => {
-      return field.jsonField && {
-        jsonField: field.jsonField,
-        value: field.default,
-      }
-    }).filter(element => {
-      return element !== undefined;
-    });
+    const subjectFields = template && template.fields.map((field) => field.jsonField && {
+      jsonField: field.jsonField,
+      value: field.default,
+    }).filter((element) => element !== undefined);
 
     const tSubject = {
       name: receiver.name,

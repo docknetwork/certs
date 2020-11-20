@@ -85,7 +85,7 @@ export default function Credential({ id, cachedCredential, setVC }) {
   const credentialData = vc && {
     issuanceDate: new Date(vc.issuanceDate),
     expirationDate: new Date(vc.expirationDate),
-    issuedBy: vc.credentialSubject[0].alumniOf,
+    issuedBy: vc.credentialSubject[0].alumniOf, // TODO: this isnt a good way fo getting issuer name because it wont be in other credential types
     issuerDID: vc.issuer,
     recipientName: vc.credentialSubject[0].name,
     recipientDID: vc.credentialSubject[0].id,

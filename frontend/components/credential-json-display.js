@@ -30,10 +30,10 @@ export default function CredentialDisplayJSON({
   const variablesMap = credential.credentialSubject[0];
   const subjectVars = Object.keys(variablesMap);
 
-  console.log('credential', credential)
+  console.log('credential', credential);
 
   function getFieldValue(field, index) {
-    let value = field.value;
+    let { value } = field;
     for (let i = 0; i < subjectVars.length; i++) {
       const svar = subjectVars[i];
       value = value.replace(`{${svar}}`, variablesMap[svar]);

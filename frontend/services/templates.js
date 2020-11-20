@@ -57,7 +57,7 @@ export async function getTemplate() {
 export async function saveTemplate(data) {
   let result;
   if (data._id) {
-    result = await apiPut('template/' + data._id, data);
+    result = await apiPut(`template/${data._id}`, data);
   } else {
     result = await apiPost('template', data);
   }

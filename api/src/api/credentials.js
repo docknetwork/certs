@@ -13,7 +13,7 @@ export default ({ config, db }) => resource({
 	/** GET /:id - Return a given entity */
 	async read(req, res, next) {
     try {
-      const credential = await Credential.findOne({_id: req.params.credential}).populate('template');
+      const credential = await Credential.findOne({_id: req.params.credential});
       if (credential) {
     		res.json({
           _id: credential._id,
@@ -35,7 +35,7 @@ export default ({ config, db }) => resource({
     try {
       const query = Credential.find({
         creator,
-      }).sort({created: 'desc'}).skip(parseInt(offset)).limit(parseInt(limit));
+      }).sort({created: 'desc'}).populate('template').populate('receiver').skip(parseInt(offset)).limit(parseInt(limit));
       const result = await query.exec();
       res.send(result);
     } catch (e) {

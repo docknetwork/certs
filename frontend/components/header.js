@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '&:hover': {
       color: 'rgba(0, 0, 0, 1.0)',
-    }
+    },
   },
   search: {
     position: 'relative',
