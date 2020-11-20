@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { Magic } from '@magic-sdk/admin';
 import User from "../models/user";
 
