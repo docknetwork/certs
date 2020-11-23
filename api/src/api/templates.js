@@ -48,4 +48,21 @@ export default ({ config, db }) => resource({
       }
     });
 	},
+
+	/** DELETE /:id - Delete a given entity */
+	async delete(req, res, next) {
+    const user = await getUser(req);
+    const templates = req.body.templates;
+
+    if (templates.length) {
+      await CredentialTemplate.deleteMany({
+        _id: {
+          $in: templates
+        },
+        creator: user._id,
+      });
+    }
+
+		res.send({ done: true });
+	}
 });

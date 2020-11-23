@@ -8,11 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import AuthWrapper from '../../components/auth/wrapper';
 import Table from '../../components/table';
-import { getTemplates } from '../../services/user';
+import { getTemplates, deleteTemplates } from '../../services/user';
 import EmptyHero from '../../components/misc/hero';
 
 const AddTemplateModal = dynamic(() => import('../../components/modals/add-template'));
 const EditTemplateModal = dynamic(() => import('../../components/modals/add-template'));
+const AlertDialog = dynamic(() => import('../../components/alert-dialog'));
 
 function templateToRow(template) {
   return {
@@ -40,6 +41,8 @@ export default function IssuerTemplates() {
   const [state, setState] = useState({});
   const [showTemplate, setShowTemplate] = useState(false);
   const [editTemplate, setShowEditTemplate] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   async function loadTemplates() {
     const templates = await getTemplates();
@@ -73,6 +76,19 @@ export default function IssuerTemplates() {
   function handleCloseTemplate(template) {
     setShowTemplate(false);
     if (template && template._id) {
+      loadTemplates();
+    }
+  }
+
+  function handleDelete(delSelected) {
+    setShowConfirmDialog(true);
+    setSelected(delSelected);
+  }
+
+  async function handleCloseConfirmDialog(proceed) {
+    setShowConfirmDialog(false);
+    if (proceed) {
+      await deleteTemplates(selected);
       loadTemplates();
     }
   }
@@ -111,7 +127,14 @@ export default function IssuerTemplates() {
     <AuthWrapper showLoad={!state.templates}>
       {state.templates && (
         state.templates.length > 0 ? (
-          <Table actions={actions} headerAction={tableHeaderAction} rows={state.templates} title="Templates" headers={headCells} />
+          <>
+            <Table actions={actions} headerAction={tableHeaderAction} rows={state.templates} title="Templates" headers={headCells} onDelete={handleDelete} />
+            <AlertDialog
+              title="Delete these templates?"
+              message="You will no longer be able to issue credentials using this template."
+              open={showConfirmDialog}
+              onClose={handleCloseConfirmDialog} />
+          </>
         ) : (
           <>
             <Typography variant="h5">Templates</Typography>

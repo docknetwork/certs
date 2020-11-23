@@ -20,6 +20,11 @@ export async function getTotals() {
   return totals;
 }
 
+export async function deleteTemplates(templates) {
+  const totals = await apiDelete('template/delete', { templates });
+  return totals;
+}
+
 export async function deleteReceivers(receivers) {
   const totals = await apiDelete('receiver/delete', { receivers });
   return totals;

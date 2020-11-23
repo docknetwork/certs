@@ -37,7 +37,7 @@ function credentialToData(credential) {
   const { receiver } = credential;
   return {
     id: credential._id,
-    template: credential.template.name,
+    template: credential.template ? credential.template.name : 'Deleted',
     name: receiver && receiver.name,
     reference: receiver && receiver.reference,
     created: credential.created,
