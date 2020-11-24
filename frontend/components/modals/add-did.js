@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getSr25519PkHex(pk) {
+function decodePublicKey(pk) {
   return u8aToHex(b58.decode(pk.publicKeyBase58));
 }
 
@@ -157,18 +157,20 @@ export async function handleSave({
   try {
     const document = await dock.did.getDocument(did);
 
-    // TODO: check all public keys in array
-    // TODO: support more than sr25519
-    const documentPK = getSr25519PkHex(document.publicKey[0]);
-    const myControllerPk = getPublicKeyFromKeyringPair(account);
+    for (let i = 0; i < document.publicKey.length; i++) {
+      const publicKey = document.publicKey[i];
+      const documentPK = decodePublicKey(publicKey);
+      const myControllerPk = getPublicKeyFromKeyringPair(account);
 
-    // Ensure account PK matches public documents PK
-    if (documentPK === myControllerPk.value) {
-      saveDID(did, chainAccount.address);
-      handleAddDID(did, document);
-      setIsSubmitting(false);
-      return;
+      // Ensure account PK matches public documents PK
+      if (documentPK === myControllerPk.value) {
+        saveDID(did, chainAccount.address);
+        handleAddDID(did, document);
+        setIsSubmitting(false);
+        return;
+      }
     }
+
     throw new Error('The controller you entered does not own this DID!');
   } catch (e) {
     if (e.toString().indexOf('NoDIDError') === -1) {

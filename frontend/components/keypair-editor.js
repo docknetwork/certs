@@ -33,7 +33,6 @@ const keypairTypes = [{
 
 const seedTypes = ['seed (hex or string)', 'mnemonic'];
 
-// todo: put in external component
 export default function KeypairEditor({
   title = 'Account', setAccount,
 }) {
