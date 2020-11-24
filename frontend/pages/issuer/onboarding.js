@@ -171,6 +171,7 @@ export default function IssuerOnboarding() {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
+  const [otherSector, setOtherSector] = useState('');
   const [company, setCompany] = useState('');
   const [sector, setSector] = useState('');
   const [activeStep, setStep] = useState(0);
@@ -185,6 +186,10 @@ export default function IssuerOnboarding() {
 
   function handleChangeSector(e) {
     setSector(e.target.value);
+  }
+
+  function handleChangeOtherSector(e) {
+    setOtherSector(e.target.value);
   }
 
   function handleChangeName(e) {
@@ -205,7 +210,7 @@ export default function IssuerOnboarding() {
     apiPost('user', {
       name,
       entityName: company,
-      sector,
+      sector: otherSector || sector,
       role,
     });
   }
@@ -246,27 +251,43 @@ export default function IssuerOnboarding() {
           className={classes.formControl}
         />
 
-        <FormControl variant="outlined" fullWidth className={classes.formControl}>
-         <InputLabel id="sector-select-label">
-           Sector *
-         </InputLabel>
-         <Select
-            labelId="sector-select-label"
-            id="sector-select"
-            label="Sector *"
-            fullWidth
+        {sector === 'Other' ? (
+          <TextField
             variant="outlined"
-            value={sector}
-            onChange={handleChangeSector}
+            margin="normal"
+            fullWidth
+            id="otherSector"
+            label="Sector"
+            name="otherSector"
+            value={otherSector}
+            onChange={handleChangeOtherSector}
             required
-          >
-            {sectors.map((value) => (
-              <MenuItem value={value} key={value}>
-                {value}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            className={classes.formControl}
+            autoFocus
+          />
+        ) : (
+          <FormControl variant="outlined" fullWidth className={classes.formControl}>
+           <InputLabel id="sector-select-label">
+             Sector *
+           </InputLabel>
+           <Select
+              labelId="sector-select-label"
+              id="sector-select"
+              label="Sector *"
+              fullWidth
+              variant="outlined"
+              value={sector}
+              onChange={handleChangeSector}
+              required
+            >
+              {sectors.map((value) => (
+                <MenuItem value={value} key={value}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
 
         <TextField
           variant="outlined"
