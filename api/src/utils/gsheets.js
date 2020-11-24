@@ -47,7 +47,7 @@ function getNewToken(oAuth2Client, callback) {
   });
 }
 
-function insertRow(auth, name, company, sector, email) {
+function insertRow(auth, name, company, sector, email, role) {
   const sheets = google.sheets({version: 'v4', auth});
   sheets.spreadsheets.values.append({
     spreadsheetId: '1TuWda3mOrq_LD9CvmZRgcAMgSHe5Oe57W11CCJbbB_E',
@@ -56,7 +56,7 @@ function insertRow(auth, name, company, sector, email) {
     insertDataOption: 'INSERT_ROWS',
     resource: {
       values: [
-        [name, company, sector, email, new Date().toISOString()]
+        [name, company, sector, role, email, new Date().toISOString()]
       ],
     },
   }, (err, response) => {
@@ -64,13 +64,13 @@ function insertRow(auth, name, company, sector, email) {
   });
 }
 
-export default function insertSheetRow(name, company, sector, email) {
+export default function insertSheetRow(name, company, sector, email, role) {
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Sheets API.
     authorize(JSON.parse(content), (auth) => {
-      insertRow(auth, name, company, sector, email);
+      insertRow(auth, name, company, sector, email, role);
     });
   });
 }

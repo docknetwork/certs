@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   signinPaperWrapper: {
     width: '100%',
     maxWidth: '400px',
-    height: '405px',
+    height: '470px',
   },
   didPaperWrapper: {
     width: '100%',
@@ -170,6 +170,7 @@ function AccountGenerator() {
 export default function IssuerOnboarding() {
   const classes = useStyles();
   const [name, setName] = useState('');
+  const [role, setRole] = useState('');
   const [company, setCompany] = useState('');
   const [sector, setSector] = useState('');
   const [activeStep, setStep] = useState(0);
@@ -194,6 +195,10 @@ export default function IssuerOnboarding() {
     setCompany(e.target.value);
   }
 
+  function handleChangeRole(e) {
+    setRole(e.target.value);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     setStep(1);
@@ -201,6 +206,7 @@ export default function IssuerOnboarding() {
       name,
       entityName: company,
       sector,
+      role,
     });
   }
 
@@ -261,6 +267,20 @@ export default function IssuerOnboarding() {
             ))}
           </Select>
         </FormControl>
+
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="role"
+          label="Role"
+          name="role"
+          autoComplete="role"
+          value={role}
+          onChange={handleChangeRole}
+          required
+          className={classes.formControl}
+        />
 
         <Button
           size="large"

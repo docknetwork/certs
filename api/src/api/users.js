@@ -21,8 +21,8 @@ export default ({ config, db }) => resource({
     try {
       const user = await getUser(req);
       if (user) {
-        const { entityName, name, sector } = req.body;
-        insertSheetRow(name, entityName, sector, user.email);
+        const { entityName, name, sector, role } = req.body;
+        insertSheetRow(name, entityName, sector, user.email, role);
         await User.findOneAndUpdate({ _id: user._id }, {
           entityName,
           name,
