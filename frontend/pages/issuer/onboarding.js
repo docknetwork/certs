@@ -248,12 +248,12 @@ export default function IssuerOnboarding() {
 
         <FormControl variant="outlined" fullWidth className={classes.formControl}>
          <InputLabel id="sector-select-label">
-           Sector
+           Sector *
          </InputLabel>
          <Select
             labelId="sector-select-label"
             id="sector-select"
-            label="Sector"
+            label="Sector *"
             fullWidth
             variant="outlined"
             value={sector}
