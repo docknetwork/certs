@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 import dynamic from 'next/dynamic';
 import RecipientSignIn from '../components/auth/recipient-sign-in';
-import CredentialDisplay from '../components/credential-display';
+import CredentialDisplayJSON from '../components/credential-json-display';
 
 const CredentialModal = dynamic(() => import('../components/modals/credential'));
 
@@ -78,7 +78,7 @@ export default function IssuerIndex() {
               <Fade delay={index * 200}>
                 <Link href={`/credential/${credential._id}`} passHref>
                   <Paper elevation={10} className={classes.credentialWrapper} component="a" onClick={(e) => handleShowCredential(e, credential)}>
-                    <CredentialDisplay schema={credential.template} receiver={credential.receiver} date={credential.credential.issuanceDate} scale={0.5} />
+                    <CredentialDisplayJSON credential={credential.credential} schema={credential.template} scale={0.5} />
                   </Paper>
                 </Link>
               </Fade>
