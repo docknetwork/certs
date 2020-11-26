@@ -139,23 +139,22 @@ export default function Credential({ id, cachedCredential, setVC }) {
 
     for (let i = 0; i < keys.length; i++) {
       const k = keys[i];
-      if (!credentialData[k]) {
-        continue;
-      }
-      const value = typeof credentialData[k].getMonth === 'function'
-        ? moment(credentialData[k]).format('MMMM Do, YYYY') : credentialData[k].toString();
-      if (value) {
-        fields.push((
-          <React.Fragment key={i}>
-            <Typography variant="caption" gutterBottom className={classes.infoTitle}>
-              {infoTitles[k]}
-            </Typography>
-            <Typography variant="body2" className={classes.infoText} noWrap>
-              {value}
-            </Typography>
-            <br />
-          </React.Fragment>
-        ));
+      if (credentialData[k]) {
+        const value = typeof credentialData[k].getMonth === 'function'
+          ? moment(credentialData[k]).format('MMMM Do, YYYY') : credentialData[k].toString();
+        if (value) {
+          fields.push((
+            <React.Fragment key={i}>
+              <Typography variant="caption" gutterBottom className={classes.infoTitle}>
+                {infoTitles[k]}
+              </Typography>
+              <Typography variant="body2" className={classes.infoText} noWrap>
+                {value}
+              </Typography>
+              <br />
+            </React.Fragment>
+          ));
+        }
       }
     }
     return fields;

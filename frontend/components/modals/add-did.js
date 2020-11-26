@@ -90,12 +90,12 @@ export function AddDIDForm({
         1. Add DID Key
 
         <Button
-            color="primary"
-            component="a"
-            disabled={disabled}
-            onClick={handleGenerateDID}
-            className={classes.generateButton}
-            startIcon={<CachedIcon />}>
+          color="primary"
+          component="a"
+          disabled={disabled}
+          onClick={handleGenerateDID}
+          className={classes.generateButton}
+          startIcon={<CachedIcon />}>
           Generate DID
         </Button>
       </Typography>

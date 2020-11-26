@@ -78,7 +78,6 @@ export function fieldsRefToTemplate(ref) {
   const fields = [];
 
   let i = 0;
-  let x = 0;
   for (i = 0; i < decoded.length; i++) {
     const fieldType = decoded[i + 0];
     const fieldGutter = decoded[i + 1];
@@ -92,7 +91,6 @@ export function fieldsRefToTemplate(ref) {
     });
 
     i += fieldValueLength + 2;
-    x++;
   }
 
   return fields;
@@ -101,7 +99,7 @@ export function fieldsRefToTemplate(ref) {
 export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDate, template) {
   // Hardcoded context/type for current one template we support
   const credentialContext = 'https://www.w3.org/2018/credentials/examples/v1';
-  const credentialType = template && template.type || 'UniversityDegreeCredential';
+  const credentialType = (template && template.type) || 'UniversityDegreeCredential';
 
   // Create VC object
   const credential = new VerifiableCredential();
