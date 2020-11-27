@@ -143,12 +143,12 @@ export default function IssuerHeader({ user, updateUser }) {
 
   const handleClickSettings = () => {
     handleMenuClose();
-    Router.push('/issuer/accounts');
+    Router.push('/settings/accounts');
   };
 
   const handleClickDIDs = () => {
     handleMenuClose();
-    Router.push('/issuer/dids');
+    Router.push('/settings/dids');
   };
 
   const menuId = 'primary-search-account-menu';
