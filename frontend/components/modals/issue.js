@@ -173,13 +173,16 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 export function CredentialSigner({
-  did, setDID, savedDIDs, disabled,
+  onChange, disabled,
   signTitle = 'Sign credential',
   signMessage = 'Use your Decentralized Identifier (DID) to finalize and sign this credential',
   emptyMessage = 'You need to add a DID in order to sign and issue your credential.',
 }) {
   const classes = useStyles();
+  const savedDIDs = getSavedDIDs();
+  const hasDIDs = !!savedDIDs.length;
   const [showAddDID, setShowAddDID] = useState(false);
+  const [did, setDID] = useState();
 
   function handleShowDIDModal(event) {
     event.preventDefault();
@@ -200,10 +203,18 @@ export function CredentialSigner({
     setDID(event.target.value);
   }
 
-  const hasDIDs = !!savedDIDs.length;
+  useEffect(() => {
+    if (!did && savedDIDs.length) {
+      setDID(savedDIDs[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    onChange(did);
+  }, [did]);
 
   const actions = [(
-    <Button key={'adddidbtn'} variant="contained" color="primary" onClick={handleShowDIDModal}>
+    <Button key="adddidbtn" variant="contained" color="primary" onClick={handleShowDIDModal}>
       Create or import DID
     </Button>
   )];
@@ -233,13 +244,15 @@ export function CredentialSigner({
         <Select
           labelId="select-did-label"
           id="select-did"
+          key={did && did.id}
           fullWidth
+          placeholder="sada"
           variant="outlined"
           renderValue={(value) => value.id}
-          value={did}
           onChange={handleChangeDID}
-          required
           disabled={disabled}
+          value={did}
+          required
           >
           {savedDIDs.map((savedDID) => (
             <MenuItem value={savedDID} key={savedDID.id}>
@@ -249,27 +262,16 @@ export function CredentialSigner({
         </Select>
       </FormControl>
 
-    {/* <TextField
-        id="unsigned-credential-json"
-        label="Unsigned Verifiable Credential"
-        placeholder="{ ...generating }"
-        fullWidth
-        variant="outlined"
-        value={JSON.stringify(credential, null, 4)}
-        multiline
-        disabled
-        /> */}
-
       <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
     </>
   ) : (
-      <>
-        <EmptyHero
-          title="No DIDs"
-          text={emptyMessage}
-          actions={actions} />
-        <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
-      </>
+    <>
+      <EmptyHero
+        title="No DIDs"
+        text={emptyMessage}
+        actions={actions} />
+      <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
+    </>
   );
 }
 
@@ -301,8 +303,6 @@ export default function IssueModal(props) {
 
   const verifiableCredential = dataToVC(did && did.id, data.receiverCurrent, user, new Date(), oneYearFromNow, template);
   const credentialJSON = verifiableCredential && verifiableCredential.toJSON();
-
-  const savedDIDs = getSavedDIDs();
 
   function resetState() {
     setState(0);
@@ -417,9 +417,6 @@ export default function IssueModal(props) {
   useEffect(() => {
     loadReceivers();
     loadTemplates();
-    if (savedDIDs[0]) {
-      setDID(savedDIDs[0]);
-    }
   }, []);
 
   function handleToggleJSONView() {
@@ -673,7 +670,7 @@ export default function IssueModal(props) {
               className={classes.recipientInfo}
             />
           </Box>
-          <CredentialSigner disabled={isSubmitting} credential={credentialJSON} {...{ did, setDID, savedDIDs }} />
+          <CredentialSigner disabled={isSubmitting} credential={credentialJSON} onChange={setDID} />
         </Box>
       )}
       </Grid>

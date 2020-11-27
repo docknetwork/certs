@@ -117,6 +117,9 @@ export default function IssuerHeader({ user, updateUser }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const isRecipient = router.pathname.indexOf('/issuer') === -1 && (typeof localStorage !== 'undefined' && localStorage.getItem('recipientRef'));
+  const showAuthedHeader = user && router.pathname !== '/issuer/onboarding';
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -134,7 +137,7 @@ export default function IssuerHeader({ user, updateUser }) {
     handleMenuClose();
     logout();
     updateUser();
-    Router.push('/issuer/');
+    Router.push(isRecipient ? '/' : '/issuer/');
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -303,10 +306,36 @@ export default function IssuerHeader({ user, updateUser }) {
           </Link>
         ))}
       </nav>
+      {isRecipient && (
+        <>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton
+              edge="end"
+              aria-label="my account"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </>
+      )}
     </>
   );
-
-  const showAuthedHeader = user && router.pathname !== '/issuer/onboarding';
 
   return (
     <div className={classes.grow}>

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { getChainAccounts, removeChainAccount } from '../../services/chain';
-import AuthWrapper from '../../components/auth/wrapper';
+import { UnauthWrapper } from '../../components/auth/wrapper';
 import EmptyHero from '../../components/misc/hero';
 import Table from '../../components/table';
 
@@ -63,7 +63,7 @@ export default function IssuerSettingsAccounts() {
   )];
 
   return (
-    <AuthWrapper>
+    <UnauthWrapper>
       {accounts && (
         accounts.length > 0 ? (
           <Table
@@ -94,6 +94,6 @@ export default function IssuerSettingsAccounts() {
         message="Before deleting your accounts, please make sure have them backed up for restoration if you wish to use them in the future. Any new accounts added must have balance to send transactions."
         open={showConfirmDialog}
         onClose={handleCloseConfirmDialog} />
-    </AuthWrapper>
+    </UnauthWrapper>
   );
 }

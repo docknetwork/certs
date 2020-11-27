@@ -22,6 +22,19 @@ const useStyles = makeStyles((theme) => ({
 
 const isServer = () => typeof window === 'undefined';
 
+export function UnauthWrapper({ children }) {
+  const classes = useStyles();
+  return (
+    <Container maxWidth="lg" className={classes.container}>
+      <Fade>
+        <React.Fragment>
+          {children}
+        </React.Fragment>
+      </Fade>
+    </Container>
+  );
+}
+
 export default function AuthWrapper({ children, showLoad }) {
   const classes = useStyles();
 

@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
 
 import { getSavedDIDs, removeDID } from '../../services/chain';
-import AuthWrapper from '../../components/auth/wrapper';
+import { UnauthWrapper } from '../../components/auth/wrapper';
 import EmptyHero from '../../components/misc/hero';
 import Table from '../../components/table';
 
@@ -50,7 +50,7 @@ export default function IssuerSettingsDIDs() {
   )];
 
   return (
-    <AuthWrapper>
+    <UnauthWrapper>
       {accounts && (
         accounts.length > 0 ? (
           <Table
@@ -76,6 +76,6 @@ export default function IssuerSettingsDIDs() {
       )}
 
       <AddDIDModal onClose={handleCloseAddAccount} open={showAddAccount} />
-    </AuthWrapper>
+    </UnauthWrapper>
   );
 }

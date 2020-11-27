@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 import { CredentialSigner } from './issue';
-import { getSavedDIDs } from '../../services/chain';
 
 export default function CreatePresentationModal(props) {
   const classes = useStyles();
@@ -58,7 +57,6 @@ export default function CreatePresentationModal(props) {
   const [data, setData] = useState({});
   const [did, setDID] = useState();
   const { credential, id } = props;
-  const savedDIDs = getSavedDIDs();
   const didMatches = doesDIDMatchCredential();
 
   function handleChangeAccount(newAccount, newChainAccount) {
@@ -67,19 +65,20 @@ export default function CreatePresentationModal(props) {
   }
 
   function doesDIDMatchCredential(throwError = false) {
-    let matches = false;
+    if (!did || !credential) {
+      return false;
+    }
 
+    let matches = false;
     const subjects = credential.credentialSubject;
     for (let i = 0; i < subjects.length; i++) {
       const subject = subjects[i];
-      console.log('subject', subject);
       matches = subject.id === did.id;
       if (matches) {
         break;
       }
     }
 
-    // const matches = credentialDID === did.id;
     if (!matches && throwError) {
       throw new Error(`Selected DID does not match subject's DID: ${credentialDID}`);
     }
@@ -185,9 +184,9 @@ export default function CreatePresentationModal(props) {
             signTitle="Select holder DID"
             signMessage="Use your Decentralized Identifier (DID) to create and sign your presentation"
             emptyMessage="You need to add a DID in order to create and sign your presentation."
-            {...{ did, setDID, savedDIDs }} />
+            onChange={setDID} />
 
-          {!didMatches && (
+          {did && !didMatches && (
             <MuiAlert severity="error">
               DID does not match the credential subject!
             </MuiAlert>
