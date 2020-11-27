@@ -360,7 +360,7 @@ export default function IssueModal(props) {
   }
 
   function handleChange(event) {
-    data[event.target.id] = event.target.value;
+    data[event.target.id] = event.target.value && event.target.value.trim();
     setData({
       ...data,
     });

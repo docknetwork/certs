@@ -68,7 +68,10 @@ export default function CredentialModal({
   return (
     <Dialog title={modalHeader} maxWidth="xl" fullScreenBreakpoint="xl" contentProps={{ style: { padding: 0 } }} open={open}>
       <Credential key={credentialId} id={credentialId || (credential && credential._id)} cachedCredential={credential} setVC={setVC} />
-      <CreatePresentationModal id={credential._id} credential={vc} open={showCreatePresentation} onClose={handleClosePresentation} />
+
+      {credential && (
+        <CreatePresentationModal id={credential._id} credential={vc} open={showCreatePresentation} onClose={handleClosePresentation} />
+      )}
     </Dialog>
   );
 }

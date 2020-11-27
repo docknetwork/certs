@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -25,12 +25,24 @@ const useStyles = makeStyles((theme) => ({
 export default function ({ className, setCredentials }) {
   const router = useRouter();
   const classes = useStyles();
-  const [reference, setReference] = useState(router.query && router.query.reference);
+  const [reference, setReference] = useState();
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!reference) {
+      let localRef;
+      if (typeof localStorage !== 'undefined') {
+        localRef = localStorage.getItem('recipientRef');
+      }
+      setReference((router.query && router.query.reference) || localRef);
+    }
+  }, []);
 
   async function handleSignin(event) {
     event.preventDefault();
     setError(null);
+
+    localStorage.setItem('recipientRef', reference);
 
     try {
       const result = await apiPost('recipient', {

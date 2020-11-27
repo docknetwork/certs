@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -58,29 +59,52 @@ export default function CreatePresentationModal(props) {
   const [did, setDID] = useState();
   const { credential, id } = props;
   const savedDIDs = getSavedDIDs();
+  const didMatches = doesDIDMatchCredential();
 
   function handleChangeAccount(newAccount, newChainAccount) {
     setAccount(newAccount);
     setChainAccount(newChainAccount);
   }
 
+  function doesDIDMatchCredential(throwError = false) {
+    let matches = false;
+
+    const subjects = credential.credentialSubject;
+    for (let i = 0; i < subjects.length; i++) {
+      const subject = subjects[i];
+      console.log('subject', subject);
+      matches = subject.id === did.id;
+      if (matches) {
+        break;
+      }
+    }
+
+    // const matches = credentialDID === did.id;
+    if (!matches && throwError) {
+      throw new Error(`Selected DID does not match subject's DID: ${credentialDID}`);
+    }
+    return matches;
+  }
+
   async function handleSave() {
-    setIsSubmitting(true);
+    if (doesDIDMatchCredential(true)) {
+      setIsSubmitting(true);
 
-    // Get controller keypair
-    const holderKey = await getKeypairByAddress(did.controller);
-    if (!holderKey) {
-      throw new Error(`No keypair found for address ${did.controller}, try adding one`);
+      // Get controller keypair
+      const holderKey = await getKeypairByAddress(did.controller);
+      if (!holderKey) {
+        throw new Error(`No keypair found for address ${did.controller}, try adding one`);
+      }
+
+      try {
+        const vp = await createAndSignPresentation([credential], holderKey, did.id);
+        setPresentation(vp.toJSON());
+      } catch (e) {
+        snackbar.showError(e.toString());
+      }
+
+      setIsSubmitting(false);
     }
-
-    try {
-      const vp = await createAndSignPresentation([credential], holderKey, did.id);
-      setPresentation(vp.toJSON());
-    } catch (e) {
-      snackbar.showError(e.toString());
-    }
-
-    setIsSubmitting(false)
   }
 
   function handleChange(event) {
@@ -106,7 +130,7 @@ export default function CreatePresentationModal(props) {
       <Button onClick={() => props.onClose()}>
         Cancel
       </Button>
-      <Button autoFocus variant="contained" color="primary" onClick={handleSave} disabled={!did || isSubmitting}>
+      <Button autoFocus variant="contained" color="primary" onClick={handleSave} disabled={!did || isSubmitting || !didMatches}>
         Create Presentation
       </Button>
     </>
@@ -162,6 +186,12 @@ export default function CreatePresentationModal(props) {
             signMessage="Use your Decentralized Identifier (DID) to create and sign your presentation"
             emptyMessage="You need to add a DID in order to create and sign your presentation."
             {...{ did, setDID, savedDIDs }} />
+
+          {!didMatches && (
+            <MuiAlert severity="error">
+              DID does not match the credential subject!
+            </MuiAlert>
+          )}
         </>
       )}
     </Dialog>
