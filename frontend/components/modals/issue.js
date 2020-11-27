@@ -172,8 +172,11 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // }
 
-function CredentialSigner({
+export function CredentialSigner({
   did, setDID, savedDIDs, disabled,
+  signTitle = 'Sign credential',
+  signMessage = 'Use your Decentralized Identifier (DID) to finalize and sign this credential',
+  emptyMessage = 'You need to add a DID in order to sign and issue your credential.',
 }) {
   const classes = useStyles();
   const [showAddDID, setShowAddDID] = useState(false);
@@ -208,7 +211,7 @@ function CredentialSigner({
   return hasDIDs ? (
     <>
       <Typography variant="h6" gutterBottom className={classes.flexed}>
-        Sign credential
+        {signTitle}
         <Button
           color="primary"
           component="a"
@@ -221,10 +224,10 @@ function CredentialSigner({
       </Typography>
 
       <Typography variant="body1">
-        Use your Decentralized Identifier (DID) to finalize and sign this credential
+        {signMessage}
       </Typography>
 
-      <br /><br />
+      <br />
 
       <FormControl fullWidth className={classes.formControl}>
         <Select
@@ -263,7 +266,7 @@ function CredentialSigner({
       <>
         <EmptyHero
           title="No DIDs"
-          text="You need to add a DID in order to sign and issue your credential."
+          text={emptyMessage}
           actions={actions} />
         <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
       </>

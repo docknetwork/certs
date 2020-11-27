@@ -267,7 +267,7 @@ export default function AddDIDModal(props) {
   return (
     <Dialog title={'Add DID'} actions={actions} maxWidth="md" {...props}>
       <Typography>
-        To issue credentials, a verifier must be able to identify the issuer somehow. In VCDM, the issuer is defined through a decentralized identifier in the credential.
+        To verify credentials and presentations, a verifier must be able to identify the issuer and holder somehow. In VCDM, this is done through decentralized identifiers in the credential.
         You can create a new DID on the Dock testnet with this form, or import your own.
       </Typography>
 

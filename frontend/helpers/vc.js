@@ -1,4 +1,5 @@
 import VerifiableCredential from '@docknetwork/sdk/verifiable-credential';
+import VerifiablePresentation from '@docknetwork/sdk/verifiable-presentation';
 import dock from '@docknetwork/sdk';
 
 import { createKeyDetail } from '@docknetwork/sdk/utils/did';
@@ -10,6 +11,7 @@ import { getPublicKeyFromKeyringPair } from '@docknetwork/sdk/utils/misc';
 import b58 from 'bs58';
 
 import { u8aToString, stringToU8a } from '@polkadot/util';
+import { randomAsHex } from '@polkadot/util-crypto';
 import { getChainAccounts } from '../services/chain';
 
 // Setup resolvers
@@ -100,9 +102,10 @@ export function dataToVC(issuerDID, receiver, issuer, issuanceDate, expirationDa
   // Hardcoded context/type for current one template we support
   const credentialContext = 'https://www.w3.org/2018/credentials/examples/v1';
   const credentialType = (template && template.type) || 'UniversityDegreeCredential';
+  const credentialId = 'http://example.edu/credentials/2803'; // TODO: generate proper credential id?
 
   // Create VC object
-  const credential = new VerifiableCredential();
+  const credential = new VerifiableCredential(credentialId);
   credential.addContext(credentialContext);
   credential.addType(credentialType);
 
@@ -164,11 +167,48 @@ export async function getKeypairByAddress(address) {
   return null;
 }
 
+export function getVerificationKeyType(account) {
+  const typeMap = {
+    'sr25519': 'Sr25519VerificationKey2020',
+    'ed25519': 'Ed25519VerificationKey2018',
+  };
+  return typeMap[account.type];
+}
+
+export async function createAndSignPresentation(credentials, holder, holderDID) {
+  await ensureConnection();
+
+  const presentationId = 'http://example.edu/credentials/2803'; // TODO: generate proper presentation id?
+  const challenge = randomAsHex(8);
+  const domain = randomAsHex(4);
+  const compactProof = true;
+
+  const vp = new VerifiablePresentation(presentationId);
+  credentials.map(credential => {
+    vp.addCredential(credential);
+  });
+
+  const holderKey = getKeyDoc(holderDID, holder, getVerificationKeyType(holder));
+  await vp.sign(holderKey, challenge, domain, resolver, compactProof);
+
+  const ver = await vp.verify({
+    challenge,
+    domain,
+    resolver,
+    compactProof,
+    forceRevocationCheck: false,
+  });
+
+  if (!ver.verified) {
+    throw new Error(`Unable to verify presentation after signing, is the DID registered?`);
+  }
+
+  return vp;
+}
+
 export async function signVC(credential, issuerDID, controllerAccount) {
   await ensureKeyring();
-
-  const type = 'Sr25519VerificationKey2020'; // TODO: dervice type from controllerAccount type
-  const issuerKey = getKeyDoc(issuerDID, controllerAccount, type);
+  const issuerKey = getKeyDoc(issuerDID, controllerAccount, getVerificationKeyType(controllerAccount));
   const signedCredential = await credential.sign(issuerKey);
   return signedCredential;
 }
