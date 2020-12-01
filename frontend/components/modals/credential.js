@@ -40,7 +40,6 @@ export default function CredentialModal({
     setShowCreatePresentation(false);
   }
 
-
   function handleDownload() {
     downloadJSON(vc, credentialId);
   }

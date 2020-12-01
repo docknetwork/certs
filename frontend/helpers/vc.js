@@ -169,8 +169,8 @@ export async function getKeypairByAddress(address) {
 
 export function getVerificationKeyType(account) {
   const typeMap = {
-    'sr25519': 'Sr25519VerificationKey2020',
-    'ed25519': 'Ed25519VerificationKey2018',
+    sr25519: 'Sr25519VerificationKey2020',
+    ed25519: 'Ed25519VerificationKey2018',
   };
   return typeMap[account.type];
 }
@@ -184,7 +184,7 @@ export async function createAndSignPresentation(credentials, holder, holderDID) 
   const compactProof = true;
 
   const vp = new VerifiablePresentation(presentationId);
-  credentials.map(credential => {
+  credentials.map((credential) => {
     vp.addCredential(credential);
   });
 
@@ -200,7 +200,7 @@ export async function createAndSignPresentation(credentials, holder, holderDID) 
   });
 
   if (!ver.verified) {
-    throw new Error(`Unable to verify presentation after signing, is the DID registered?`);
+    throw new Error('Unable to verify presentation after signing, is the DID registered?');
   }
 
   return vp;

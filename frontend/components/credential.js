@@ -76,7 +76,9 @@ const verifiedStateLabels = [
   'Authenticity verified',
 ];
 
-export default function Credential({ id, cachedCredential, setVC, showJSON = true }) {
+export default function Credential({
+  id, cachedCredential, setVC, showJSON = true,
+}) {
   const classes = useStyles();
   const [credential, setCredential] = useState(null);
   const [viewJSON, setViewJSON] = useState(false);

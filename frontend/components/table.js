@@ -298,17 +298,15 @@ export default function EnhancedTable({
                           />
                         </TableCell>
                       )}
-                      {headers.map((header, headerIndex) => {
-                        return headerIndex > 0 ? (
+                      {headers.map((header, headerIndex) => (headerIndex > 0 ? (
                           <TableCell key={headerIndex}>
                             {row[header.id] || 'Unassigned'}
                           </TableCell>
-                        ) : (
+                      ) : (
                           <TableCell key={headerIndex} component="th" id={labelId} scope="row" padding={allowSelect ? 'none' : 'default'}>
                             {row[header.id] || 'Unassigned'}
                           </TableCell>
-                        );
-                      })}
+                      )))}
 
                       {actions && (
                         <TableCell>

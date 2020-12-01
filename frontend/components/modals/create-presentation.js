@@ -20,6 +20,8 @@ import AddAccountModal from './add-account';
 import EmptyHero from '../misc/hero';
 import AddDIDModal from './add-did';
 
+import { DIDSelector } from './issue';
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     marginBottom: theme.spacing(1),
@@ -27,24 +29,22 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
   },
-    generateButton: {
-      padding: 0,
-      marginLeft: 'auto',
-      marginTop: 'auto',
-      textTransform: 'none',
-      fontSize: '15px',
-      fontWeight: 'normal',
-    },
-    formHeader: {
-      fontWeight: 'normal',
-      fontSize: '18px',
-      marginBottom: theme.spacing(2),
-      marginTop: theme.spacing(2),
-      display: 'flex',
-    },
+  generateButton: {
+    padding: 0,
+    marginLeft: 'auto',
+    marginTop: 'auto',
+    textTransform: 'none',
+    fontSize: '15px',
+    fontWeight: 'normal',
+  },
+  formHeader: {
+    fontWeight: 'normal',
+    fontSize: '18px',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    display: 'flex',
+  },
 }));
-
-import { DIDSelector } from './issue';
 
 export default function CreatePresentationModal(props) {
   const classes = useStyles();
@@ -126,7 +126,7 @@ export default function CreatePresentationModal(props) {
   }
 
   function handleDownload() {
-    downloadJSON(presentation, id + '-presentation');
+    downloadJSON(presentation, `${id}-presentation`);
     props.onClose(presentation);
   }
 

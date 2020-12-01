@@ -23,6 +23,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
+import { createNewDockDID } from '@docknetwork/sdk/utils/did';
+import { randomAsHex } from '@polkadot/util-crypto';
+import dock from '@docknetwork/sdk';
 import { useAuthed } from '../../helpers/auth';
 import Dialog from '../dialog';
 
@@ -30,24 +33,22 @@ import { getTemplates, getReceivers } from '../../services/user';
 
 import {
   dataToVC, signVC, verifyVC, getKeypairByAddress,
+
+  ensureConnection, registerNewDIDUsingPair,
 } from '../../helpers/vc';
 
 import { saveCredential, saveReceiver } from '../../services/credentials';
 import CredentialDisplay from '../credential-display';
 
 import useCustomSnackbar from '../../helpers/snackbar';
-import { getChainAccounts, savedAccountToKeyring, getSavedDIDs, saveChainAccount, saveDID } from '../../services/chain';
+import {
+  getChainAccounts, savedAccountToKeyring, getSavedDIDs, saveChainAccount, saveDID,
+} from '../../services/chain';
 
 import EmptyHero from '../misc/hero';
 import AddDIDModal from './add-did';
 
-import {
-  ensureConnection, registerNewDIDUsingPair,
-} from '../../helpers/vc';
-import { createNewDockDID } from '@docknetwork/sdk/utils/did';
 import { apiPost } from '../../services/api';
-import { randomAsHex } from '@polkadot/util-crypto';
-import dock from '@docknetwork/sdk';
 
 const nodeAddress = process.env.NEXT_PUBLIC_WSS_NODE_ADDR;
 
@@ -234,28 +235,27 @@ export function DIDSelector({
     const accountData = await dock.api.query.system.account(account.address);
     hasBalance = accountData.data.free > 0;
 
-      const did = createNewDockDID();
+    const did = createNewDockDID();
 
-      try {
-        const result = await registerNewDIDUsingPair(did, account);
+    try {
+      const result = await registerNewDIDUsingPair(did, account);
 
-        let didSucceed = false;
-        result.events.forEach(({ event: { method } }) => {
-          if (method === 'DidAdded') {
-            didSucceed = true;
-          }
-        });
-
-        if (didSucceed) {
-          saveDID(did, account.address);
-          snackbar.showSuccess('Registered DID!');
-
-        } else {
-          snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
+      let didSucceed = false;
+      result.events.forEach(({ event: { method } }) => {
+        if (method === 'DidAdded') {
+          didSucceed = true;
         }
-      } catch (e) {
-        snackbar.showError(e.toString());
+      });
+
+      if (didSucceed) {
+        saveDID(did, account.address);
+        snackbar.showSuccess('Registered DID!');
+      } else {
+        snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
       }
+    } catch (e) {
+      snackbar.showError(e.toString());
+    }
   }
 
   function generateAccount() {
@@ -291,7 +291,7 @@ export function DIDSelector({
 
   const actions = [(
     <>
-      <Button key="adddidbtn" onClick={handleShowDIDModal} style={{marginRight: '10px'}}>
+      <Button key="adddidbtn" onClick={handleShowDIDModal} style={{ marginRight: '10px' }}>
         Import my own DID
       </Button>
       <Button key="generatedidbtn" variant="contained" color="primary" onClick={handleGenerateDID}>
@@ -449,8 +449,8 @@ export default function IssueModal(props) {
   }
 
   function handleChange(event) {
-    const id = event.target.id;
-    let value = event.target.value;
+    const { id } = event.target;
+    let { value } = event.target;
     if (value && (id === 'receiverDID' || id === 'receiverEmail')) {
       value = value.trim();
     }

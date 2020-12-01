@@ -91,7 +91,7 @@ export default function IssuerRecipients() {
       setIssueDefaultReceiver(row);
       setShowEditModal(true);
     },
-  }/*, {
+  }, /* , {
     icon: (
       <CardMembershipIcon />
     ),
@@ -100,7 +100,7 @@ export default function IssuerRecipients() {
       setIssueDefaultReceiver(row);
       setShowIssueModal(true);
     },
-  }*/];
+  } */];
 
   const issueText = (
     <>
