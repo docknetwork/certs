@@ -1,3 +1,5 @@
+import dock from '@docknetwork/sdk';
+
 let accountStore;
 let didStore;
 
@@ -68,6 +70,10 @@ export function removeChainAccount(address) {
 
   accounts.push(...keepAccounts.reverse());
   save();
+}
+
+export function savedAccountToKeyring(value) {
+  return value && dock.keyring.addFromUri(value.seed, null, value.type);
 }
 
 export function saveDID(id, controller) {

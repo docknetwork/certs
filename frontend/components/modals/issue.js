@@ -36,10 +36,20 @@ import { saveCredential, saveReceiver } from '../../services/credentials';
 import CredentialDisplay from '../credential-display';
 
 import useCustomSnackbar from '../../helpers/snackbar';
-import { getSavedDIDs } from '../../services/chain';
+import { getChainAccounts, savedAccountToKeyring, getSavedDIDs, saveChainAccount, saveDID } from '../../services/chain';
 
 import EmptyHero from '../misc/hero';
 import AddDIDModal from './add-did';
+
+import {
+  ensureConnection, registerNewDIDUsingPair,
+} from '../../helpers/vc';
+import { createNewDockDID } from '@docknetwork/sdk/utils/did';
+import { apiPost } from '../../services/api';
+import { randomAsHex } from '@polkadot/util-crypto';
+import dock from '@docknetwork/sdk';
+
+const nodeAddress = process.env.NEXT_PUBLIC_WSS_NODE_ADDR;
 
 function emailIsValid(email) {
   return (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email));
@@ -182,7 +192,9 @@ export function CredentialSigner({
   const savedDIDs = getSavedDIDs();
   const hasDIDs = !!savedDIDs.length;
   const [showAddDID, setShowAddDID] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [did, setDID] = useState();
+  const snackbar = useCustomSnackbar();
 
   function handleShowDIDModal(event) {
     event.preventDefault();
@@ -203,6 +215,70 @@ export function CredentialSigner({
     setDID(event.target.value);
   }
 
+  async function requestBalance(account) {
+    // Send request to faucet
+    try {
+      await apiPost('faucet', { address: account.address, nodeAddress });
+    } catch (e) {
+      console.error(e);
+      snackbar.showError('There was an error requesting balance, trying again in 10s...');
+      setTimeout(() => {
+        requestBalance(account);
+      }, 10000);
+      return;
+    }
+    dock.setAccount(account);
+
+    // Double check account has balance
+    let hasBalance = false;
+    const accountData = await dock.api.query.system.account(account.address);
+    hasBalance = accountData.data.free > 0;
+
+      const did = createNewDockDID();
+
+      try {
+        const result = await registerNewDIDUsingPair(did, account);
+
+        let didSucceed = false;
+        result.events.forEach(({ event: { method } }) => {
+          if (method === 'DidAdded') {
+            didSucceed = true;
+          }
+        });
+
+        if (didSucceed) {
+          saveDID(did, account.address);
+          snackbar.showSuccess('Registered DID!');
+
+        } else {
+          snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
+        }
+      } catch (e) {
+        snackbar.showError(e.toString());
+      }
+  }
+
+  function generateAccount() {
+    const seed = randomAsHex(32);
+    const type = 'sr25519';
+    const account = dock.keyring.addFromUri(seed, null, type);
+    saveChainAccount(account.address, seed, type, 'Certs Account');
+    return account;
+  }
+
+  async function handleGenerateDID() {
+    setIsGenerating(true);
+    try {
+      await ensureConnection();
+      const accounts = getChainAccounts();
+      const account = savedAccountToKeyring(accounts[0]) || generateAccount();
+      await requestBalance(account);
+    } catch (e) {
+      snackbar.showError(e.toString());
+    }
+    setIsGenerating(false);
+  }
+
   useEffect(() => {
     if (!did && savedDIDs.length) {
       setDID(savedDIDs[0]);
@@ -214,9 +290,14 @@ export function CredentialSigner({
   }, [did]);
 
   const actions = [(
-    <Button key="adddidbtn" variant="contained" color="primary" onClick={handleShowDIDModal}>
-      Create or import DID
-    </Button>
+    <>
+      <Button key="adddidbtn" onClick={handleShowDIDModal} style={{marginRight: '10px'}}>
+        Import my own DID
+      </Button>
+      <Button key="generatedidbtn" variant="contained" color="primary" onClick={handleGenerateDID}>
+        Generate DID
+      </Button>
+    </>
   )];
 
   return hasDIDs ? (
@@ -265,13 +346,21 @@ export function CredentialSigner({
       <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
     </>
   ) : (
-    <>
-      <EmptyHero
-        title="No DIDs"
-        text={emptyMessage}
-        actions={actions} />
-      <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
-    </>
+    isGenerating ? (
+      <>
+        <EmptyHero
+          title="Generating DID"
+          text="Please wait..." />
+      </>
+    ) : (
+      <>
+        <EmptyHero
+          title="No DIDs"
+          text={emptyMessage}
+          actions={actions} />
+        <AddDIDModal open={showAddDID} onClose={handleCloseDIDModal} />
+      </>
+    )
   );
 }
 
