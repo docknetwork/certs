@@ -299,22 +299,17 @@ export default function EnhancedTable({
                         </TableCell>
                       )}
                       {headers.map((header, headerIndex) => {
-                        if (!row[header.id]) {
-                          return;
-                        }
-
                         return headerIndex > 0 ? (
                           <TableCell key={headerIndex}>
-                            {row[header.id]}
+                            {row[header.id] || 'Unassigned'}
                           </TableCell>
                         ) : (
                           <TableCell key={headerIndex} component="th" id={labelId} scope="row" padding={allowSelect ? 'none' : 'default'}>
-                            {row[header.id]}
+                            {row[header.id] || 'Unassigned'}
                           </TableCell>
                         );
                       })}
 
-                      {/* <TableCell align="right">{row.views}</TableCell> */}
                       {actions && (
                         <TableCell>
                           {actions.map((action, actionIndex) => (
