@@ -117,15 +117,9 @@ export default function IssuerHeader({ user, updateUser }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-console.log('router.pathname', router.pathname)
   const showIssuerHeader = router.pathname !== '/issuer/onboarding' && router.pathname.indexOf('/issuer/') === 0;
-  // const isRecipient = !isServer() && router.pathname.indexOf('/issuer') === -1 && (typeof localStorage !== 'undefined' && !!localStorage.getItem('recipientRef'));
   const isRecipient = !showIssuerHeader;
   const isAuthed = (showIssuerHeader && user) || (isRecipient && (typeof localStorage !== 'undefined' && !!localStorage.getItem('recipientRef')));
-
-  console.log('showIssuerHeader', showIssuerHeader)
-  console.log('isRecipient', isRecipient)
-  console.log('isAuthed', isAuthed)
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
