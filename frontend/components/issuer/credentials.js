@@ -28,9 +28,6 @@ const headCells = [{
 },
 {
   id: 'created', numeric: false, disablePadding: false, label: 'Date',
-},
-{
-  id: 'actions', numeric: false, disablePadding: true, label: 'Actions',
 }];
 
 function credentialToData(credential) {

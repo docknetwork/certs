@@ -32,9 +32,6 @@ const headCells = [
   {
     id: 'created', numeric: false, disablePadding: false, label: 'Created',
   },
-  // {
-  //   id: 'actions', numeric: false, disablePadding: false, label: 'Actions',
-  // },
 ];
 
 export default function IssuerTemplates() {
