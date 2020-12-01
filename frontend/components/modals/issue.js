@@ -182,7 +182,7 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // }
 
-export function CredentialSigner({
+export function DIDSelector({
   onChange, disabled,
   signTitle = 'Sign credential',
   signMessage = 'Use your Decentralized Identifier (DID) to finalize and sign this credential',
@@ -759,7 +759,7 @@ export default function IssueModal(props) {
               className={classes.recipientInfo}
             />
           </Box>
-          <CredentialSigner disabled={isSubmitting} credential={credentialJSON} onChange={setDID} />
+          <DIDSelector disabled={isSubmitting} credential={credentialJSON} onChange={setDID} />
         </Box>
       )}
       </Grid>

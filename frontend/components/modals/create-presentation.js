@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-import { CredentialSigner } from './issue';
+import { DIDSelector } from './issue';
 
 export default function CreatePresentationModal(props) {
   const classes = useStyles();
@@ -189,7 +189,7 @@ export default function CreatePresentationModal(props) {
           </Typography>
           <br />
 
-          <CredentialSigner
+          <DIDSelector
             disabled={isSubmitting}
             credential={credential}
             signTitle="Select holder DID"
