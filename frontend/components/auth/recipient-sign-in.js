@@ -28,34 +28,46 @@ export default function ({ className, setCredentials }) {
   const [reference, setReference] = useState();
   const [error, setError] = useState('');
 
+  let localRef;
+  if (typeof localStorage !== 'undefined') {
+    localRef = localStorage.getItem('recipientRef');
+  }
+
   useEffect(() => {
     if (!reference) {
-      let localRef;
-      if (typeof localStorage !== 'undefined') {
-        localRef = localStorage.getItem('recipientRef');
-      }
-      setReference((router.query && router.query.reference) || localRef);
+      const ref = (router.query && router.query.reference) || localRef;
+      setReference(ref);
+      loadCredentials(ref);
     }
   }, []);
 
   async function handleSignin(event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
+
+    loadCredentials(reference);
+  }
+
+  async function loadCredentials(ref) {
     setError(null);
 
-    localStorage.setItem('recipientRef', reference);
+    localStorage.setItem('recipientRef', ref);
 
     try {
       const result = await apiPost('recipient', {
-        reference,
+        reference: ref,
       });
 
       if (result.length) {
         setCredentials(result);
       } else {
         setError('You have not been issued any credentials.');
+        localStorage.removeItem('recipientRef');
       }
     } catch (e) {
       setError('Unable to get credentials, please check your reference.');
+      localStorage.removeItem('recipientRef');
     }
   }
 
@@ -63,7 +75,7 @@ export default function ({ className, setCredentials }) {
     setReference(e.target.value);
   }
 
-  return (
+  return !localRef && (
     <div {...{ className }}>
       <img style={{ margin: '5px auto 30px auto' }} width="155.97px" height="40px" src={'/static/img/certs-logo.svg'} />
       <center>

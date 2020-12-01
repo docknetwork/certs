@@ -63,6 +63,10 @@ export default function IssuerIndex() {
     setShowCredential(false);
   }
 
+  if (isServer()) {
+    return null;
+  }
+
   return (isServer() || credentials.length <= 0) ? (
     <div className={classes.signinRoot}>
       <Paper variant="outlined" className={classes.signinPaperWrapper}>
