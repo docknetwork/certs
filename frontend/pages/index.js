@@ -87,7 +87,12 @@ export default function IssuerIndex({ updateUser }) {
         </Grid>
       </Container>
 
-      <CredentialModal key={showCredential} credential={showCredential} onClose={handleCloseCredential} open={!!showCredential} canCreatePresentation={true} />
+      <CredentialModal
+        key={showCredential}
+        credential={showCredential}
+        onClose={handleCloseCredential}
+        open={!!showCredential}
+        canCreatePresentation={false} />
     </Box>
   );
 }
