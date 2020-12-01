@@ -449,7 +449,12 @@ export default function IssueModal(props) {
   }
 
   function handleChange(event) {
-    data[event.target.id] = event.target.value && event.target.value.trim();
+    const id = event.target.id;
+    let value = event.target.value;
+    if (value && (id === 'receiverDID' || id === 'receiverEmail')) {
+      value = value.trim();
+    }
+    data[id] = value;
     setData({
       ...data,
     });

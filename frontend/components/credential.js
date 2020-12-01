@@ -76,7 +76,7 @@ const verifiedStateLabels = [
   'Authenticity verified',
 ];
 
-export default function Credential({ id, cachedCredential, setVC }) {
+export default function Credential({ id, cachedCredential, setVC, showJSON = true }) {
   const classes = useStyles();
   const [credential, setCredential] = useState(null);
   const [viewJSON, setViewJSON] = useState(false);
@@ -174,9 +174,11 @@ export default function Credential({ id, cachedCredential, setVC }) {
                       {verifiedStateLabels[verifiedState]}
                     </div>
 
-                    <a onClick={handleToggleJSONView} className={classes.viewJSONLink}>
-                      {viewJSON ? 'Close' : 'View JSON'}
-                    </a>
+                    {showJSON && (
+                      <a onClick={handleToggleJSONView} className={classes.viewJSONLink}>
+                        {viewJSON ? 'Close' : 'View JSON'}
+                      </a>
+                    )}
                   </div>
                   {viewJSON ? (
                     <Paper elevation={10} className={classes.jsonWrapper}>

@@ -15,10 +15,6 @@ export default function CredentialPage() {
   const router = useRouter();
   const [vc, setVC] = useState();
   const { id } = router.query;
-
-  function handleDownload() {
-    downloadJSON(vc, id);
-  }
   return (
     <>
       <AppBar position="fixed" color="#ffffff" style={{ zIndex: 100, boxShadow: 'none', borderBottom: '1px solid rgba(0,0,0,0.12)' }}>
@@ -28,16 +24,9 @@ export default function CredentialPage() {
               <img style={{ margin: 0 }} width="103px" height="26px" src={'/static/img/certs-logo.svg'} />
             </a>
           </Link>
-          {vc && (
-            <>
-              <IconButton aria-label="save" onClick={handleDownload} style={{ marginLeft: '10px' }}>
-                <SaveAltIcon />
-              </IconButton>
-            </>
-          )}
         </Toolbar>
       </AppBar>
-      <Credential id={id} setVC={setVC} />
+      <Credential id={id} setVC={setVC} showJSON={false} />
     </>
   );
 }
