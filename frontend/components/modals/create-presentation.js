@@ -70,13 +70,24 @@ export default function CreatePresentationModal(props) {
     }
 
     let matches = false;
+    let hasSubjectId = false;
+
+    // Check all subjects for DID
     const subjects = credential.credentialSubject;
     for (let i = 0; i < subjects.length; i++) {
       const subject = subjects[i];
+      if (subject.id !== undefined) {
+        hasSubjectId = true;
+      }
       matches = subject.id === did.id;
       if (matches) {
         break;
       }
+    }
+
+    // Matches if subject has no ID to test with
+    if (!hasSubjectId) {
+      return true;
     }
 
     if (!matches && throwError) {
