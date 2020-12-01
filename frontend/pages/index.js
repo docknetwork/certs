@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const isServer = () => typeof window === 'undefined';
 
-export default function IssuerIndex() {
+export default function IssuerIndex({ updateUser }) {
   const classes = useStyles();
   const [credentials, setCredentials] = useState([]);
   const [showCredential, setShowCredential] = useState(false);
@@ -63,14 +63,10 @@ export default function IssuerIndex() {
     setShowCredential(false);
   }
 
-  if (isServer()) {
-    return null;
-  }
-
   return (isServer() || credentials.length <= 0) ? (
     <div className={classes.signinRoot}>
       <Paper variant="outlined" className={classes.signinPaperWrapper}>
-        <RecipientSignIn className={classes.signinPaper} setCredentials={setCredentials} />
+        <RecipientSignIn className={classes.signinPaper} setCredentials={setCredentials} updateUser={updateUser} />
       </Paper>
     </div>
   ) : (

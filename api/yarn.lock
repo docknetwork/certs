@@ -191,10 +191,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@docknetwork/sdk@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.3.7.tgz#8a957c7aec0866aedf952932867fd02b39e4b691"
-  integrity sha512-SBaj3YURRijPNQLINojb2xPbBj1WDhLpzjIG1GjWVjJt5yk8k0VyTFgiSWsqk8cVD3yitt6SY+ComH7iVzKO4g==
+"@docknetwork/sdk@^0.3.9":
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.3.9.tgz#e437bea4e501f7ee4eb3294c06c5bd71102f537b"
+  integrity sha512-zP3MTVC7fvdFJjLmuxE58Of9LoaOxbopRaPeMwpb/0ogJNKSTjo7MVXLuFv0onVLZ4PFbuxYC2hqiuO5Gh4evw==
   dependencies:
     "@polkadot/api" "2.1.1"
     "@polkadot/keyring" "3.5.1"
@@ -2926,6 +2926,13 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
+express-json-error-handler@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/express-json-error-handler/-/express-json-error-handler-4.0.0.tgz#fcbe9c93aa01248a1cf07f1e3f0b2c2a3b40dc46"
+  integrity sha512-3qmzBE0rzrHE+qyzBgjn5feeNiWE3MS/cilfkDIWo/QgU2bTsmI70XQLcnuXs8EDSMbOWastQHoEgVxg9q2QJQ==
+  dependencies:
+    lodash "^4.17.20"
+
 express@^4.13.3, express@^4.17.1:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
@@ -4136,9 +4143,9 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
-"jsonld-signatures@https://github.com/docknetwork/jsonld-signatures":
+"jsonld-signatures@git+https://github.com/docknetwork/jsonld-signatures.git":
   version "6.0.2-0"
-  resolved "https://github.com/docknetwork/jsonld-signatures#b14b6e6078f7a9ffd635f4e0f76f2a5d377e45b7"
+  resolved "git+https://github.com/docknetwork/jsonld-signatures.git#b14b6e6078f7a9ffd635f4e0f76f2a5d377e45b7"
   dependencies:
     base64url "^3.0.1"
     crypto-ld "^3.7.0"
@@ -4276,7 +4283,7 @@ localforage@^1.7.4:
   dependencies:
     lie "3.1.1"
 
-lodash@^4.0.0, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.3.0:
+lodash@^4.0.0, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==

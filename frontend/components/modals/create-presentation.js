@@ -110,6 +110,7 @@ export default function CreatePresentationModal(props) {
         const vp = await createAndSignPresentation([credential], holderKey, did.id);
         setPresentation(vp.toJSON());
       } catch (e) {
+        console.error(e);
         snackbar.showError(e.toString());
       }
 

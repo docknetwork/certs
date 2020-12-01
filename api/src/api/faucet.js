@@ -7,7 +7,7 @@ import {DockAPI} from '@docknetwork/sdk';
 
 export default async (req, res, next) => {
   try {
-    const user = await getUser(req);
+    // const user = await getUser(req);
     const { address, nodeAddress } = req.body;
     if (!address) {
       throw new Error('No address!');

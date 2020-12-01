@@ -27,16 +27,25 @@ export function hasAuthToken() {
   return !!localStorage.getItem('authToken');
 }
 
-export function logout() {
+export function logout(recipient = true) {
   localStorage.removeItem('authToken');
   localStorage.removeItem('authUser');
+
+  if (recipient) {
+    localStorage.removeItem('recipientRef');
+  }
 }
 
 export function useAuthed() {
   const [user, setUser] = useState(typeof window !== 'undefined' ? getLocalUser() : null);
   async function loadUser() {
-    const u = await getUserFromApi();
-    setUser(u);
+    try {
+      const u = await getUserFromApi();
+      setUser(u);
+    } catch (e) {
+      logout(false);
+      setUser(null);
+    }
   }
 
   const forceUpdate = useCallback(() => {

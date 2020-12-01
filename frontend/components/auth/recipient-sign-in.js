@@ -22,22 +22,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ className, setCredentials }) {
+function getStorageValue(key) {
+  let localRef;
+  if (typeof localStorage !== 'undefined') {
+    localRef = localStorage.getItem(key);
+    if (localRef === 'null' || localRef === 'undefined') {
+      localRef = null;
+    }
+  }
+  return localRef;
+}
+
+export default function ({ className, setCredentials, updateUser }) {
   const router = useRouter();
   const classes = useStyles();
   const [reference, setReference] = useState();
   const [error, setError] = useState('');
-
-  let localRef;
-  if (typeof localStorage !== 'undefined') {
-    localRef = localStorage.getItem('recipientRef');
-  }
+  const localRef = getStorageValue('recipientRef');
 
   useEffect(() => {
     if (!reference) {
       const ref = (router.query && router.query.reference) || localRef;
-      setReference(ref);
-      loadCredentials(ref);
+      if (ref) {
+        setReference(ref);
+        loadCredentials(ref);
+      }
     }
   }, []);
 
@@ -60,6 +69,7 @@ export default function ({ className, setCredentials }) {
       });
 
       if (result.length) {
+        updateUser();
         setCredentials(result);
       } else {
         setError('You have not been issued any credentials.');
@@ -75,7 +85,7 @@ export default function ({ className, setCredentials }) {
     setReference(e.target.value);
   }
 
-  return !localRef && (
+  return (
     <div {...{ className }}>
       <img style={{ margin: '5px auto 30px auto' }} width="155.97px" height="40px" src={'/static/img/certs-logo.svg'} />
       <center>
@@ -103,7 +113,7 @@ export default function ({ className, setCredentials }) {
           fullWidth
           variant="contained"
           color="primary"
-          disabled={!reference}
+          disabled={!reference || localRef}
           className={classes.submit}
         >
           View Credentials

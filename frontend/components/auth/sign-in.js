@@ -30,16 +30,19 @@ const useStyles = makeStyles((theme) => ({
 export default function ({ className, onSignin }) {
   const classes = useStyles();
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [magic, setMagic] = useState('');
 
   async function handleSignin(e) {
     e.preventDefault();
+    setIsSubmitting(true);
 
     let did;
     try {
       did = await magic.auth.loginWithMagicLink({ email });
     } catch (error) {
       // Magic handles errors UI
+      setIsSubmitting(false);
       return;
     }
     const authRequest = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth`, {
@@ -48,7 +51,6 @@ export default function ({ className, onSignin }) {
     });
 
     const authData = await authRequest.json();
-
     if (authData.token) {
       localStorage.setItem('authToken', authData.token);
       localStorage.setItem('authUser', JSON.stringify(authData.user));
@@ -57,10 +59,13 @@ export default function ({ className, onSignin }) {
       }
 
       const gotoOnboarding = authData.new || !authData.user.entityName;
-      Router.push(gotoOnboarding ? '/issuer/onboarding' : '/issuer');
+      Router.push(gotoOnboarding ? '/issuer/onboarding' : '/issuer/dashboard');
     } else {
+      setIsSubmitting(false);
       throw new Error('No sign in token');
     }
+
+    setIsSubmitting(false);
   }
 
   function handleChangeEmail(e) {
@@ -68,9 +73,8 @@ export default function ({ className, onSignin }) {
   }
 
   useEffect(() => {
-    if (hasAuthToken()) {
-      // Router.push(`/issuer`);
-    }
+    Router.prefetch('/issuer/onboarding');
+    Router.prefetch('/issuer/dashboard');
     setMagic(new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY));
   }, []);
 
@@ -93,18 +97,20 @@ export default function ({ className, onSignin }) {
           autoFocus
           value={email}
           onChange={handleChangeEmail}
+          disabled={isSubmitting}
           required
         />
-        <FormControlLabel
+        {/*<FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
-        />
+        />*/}
         <Button
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
+          disabled={isSubmitting}
         >
           Sign In
         </Button>

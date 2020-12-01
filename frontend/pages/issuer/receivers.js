@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import CardMembershipIcon from '@material-ui/icons/CardMembership';
+// import CardMembershipIcon from '@material-ui/icons/CardMembership';
 import EditIcon from '@material-ui/icons/Edit';
 import dynamic from 'next/dynamic';
 
@@ -91,7 +91,7 @@ export default function IssuerRecipients() {
       setIssueDefaultReceiver(row);
       setShowEditModal(true);
     },
-  }, {
+  }/*, {
     icon: (
       <CardMembershipIcon />
     ),
@@ -100,7 +100,7 @@ export default function IssuerRecipients() {
       setIssueDefaultReceiver(row);
       setShowIssueModal(true);
     },
-  }];
+  }*/];
 
   const issueText = (
     <>

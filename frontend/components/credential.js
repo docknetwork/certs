@@ -65,7 +65,7 @@ const infoTitles = {
   issuanceDate: 'Issue Date',
   expirationDate: 'Expiration Date',
   issuedBy: 'Issued by',
-  issuerDID: 'Issuers DID',
+  issuerDID: 'Issuer\'s DID',
   recipientName: 'Issued to',
   recipientDID: 'Recipient DID',
 };

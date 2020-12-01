@@ -44,6 +44,7 @@
     "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",
     "express": "^4.13.3",
+    "express-json-error-handler": "^4.0.0",
     "googleapis": "39",
     "magic-sdk": "^3.0.1",
     "mongoose": "^5.10.10",

@@ -1,4 +1,6 @@
 import fetch from 'isomorphic-unfetch';
+import { logout } from '../helpers/auth';
+import Router from 'next/router';
 
 function queryParams(params) {
   if (!params) {
@@ -19,8 +21,13 @@ function getAuthedHeaders() {
 }
 
 export async function getUser() {
-  const userData = await apiGet('user');
-  return userData.authorized && userData.user;
+  try {
+    const userData = await apiGet('user');
+    return userData.authorized && userData.user;
+  } catch (e) {
+    logout();
+    Router.push('/');
+  }
 }
 
 export async function apiGet(route, params) {
@@ -29,6 +36,9 @@ export async function apiGet(route, params) {
   });
 
   const json = await request.json();
+  if (json.status === 500) {
+    throw new Error(json.message);
+  }
   return json;
 }
 
@@ -40,6 +50,9 @@ export async function apiDelete(route, data) {
   });
 
   const json = await request.json();
+  if (json.status === 500) {
+    throw new Error(json.message);
+  }
   return json;
 }
 
@@ -51,6 +64,9 @@ export async function apiPost(route, data) {
   });
 
   const json = await request.json();
+  if (json.status === 500) {
+    throw new Error(json.message);
+  }
   return json;
 }
 
@@ -62,5 +78,8 @@ export async function apiPut(route, data) {
   });
 
   const json = await request.json();
+  if (json.status === 500) {
+    throw new Error(json.message);
+  }
   return json;
 }

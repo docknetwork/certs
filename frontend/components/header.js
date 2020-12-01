@@ -117,8 +117,15 @@ export default function IssuerHeader({ user, updateUser }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const isRecipient = router.pathname.indexOf('/issuer') === -1 && (typeof localStorage !== 'undefined' && localStorage.getItem('recipientRef'));
-  const showAuthedHeader = user && router.pathname !== '/issuer/onboarding';
+console.log('router.pathname', router.pathname)
+  const showIssuerHeader = router.pathname !== '/issuer/onboarding' && router.pathname.indexOf('/issuer/') === 0;
+  // const isRecipient = !isServer() && router.pathname.indexOf('/issuer') === -1 && (typeof localStorage !== 'undefined' && !!localStorage.getItem('recipientRef'));
+  const isRecipient = !showIssuerHeader;
+  const isAuthed = (showIssuerHeader && user) || (isRecipient && (typeof localStorage !== 'undefined' && !!localStorage.getItem('recipientRef')));
+
+  console.log('showIssuerHeader', showIssuerHeader)
+  console.log('isRecipient', isRecipient)
+  console.log('isAuthed', isAuthed)
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -134,10 +141,15 @@ export default function IssuerHeader({ user, updateUser }) {
   };
 
   const handleLogout = () => {
+    const wasRecipient = isRecipient;
     handleMenuClose();
     logout();
     updateUser();
-    Router.push(isRecipient ? '/' : '/issuer/');
+    if (router.pathname === '/' || router.pathname === '/issuer/') {
+      router.reload();
+    } else {
+      router.push(wasRecipient ? '/' : '/issuer/');
+    }
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -146,12 +158,12 @@ export default function IssuerHeader({ user, updateUser }) {
 
   const handleClickSettings = () => {
     handleMenuClose();
-    Router.push('/settings/accounts');
+    router.push('/settings/accounts');
   };
 
   const handleClickDIDs = () => {
     handleMenuClose();
-    Router.push('/settings/dids');
+    router.push('/settings/dids');
   };
 
   const menuId = 'primary-search-account-menu';
@@ -234,42 +246,9 @@ export default function IssuerHeader({ user, updateUser }) {
     text: 'Issuers',
   }];
 
-  const AuthedHeader = (
+  const AccountCircleButton = isAuthed && (
     <>
-      <nav className={classes.sectionDesktop}>
-        {authLinks.map((link) => (
-          <Link href={link.href} passHref key={link.href}>
-            <a className={!isServer() && link.href === router.pathname ? classes.navLinkActive : classes.navLink}>
-              {link.text}
-            </a>
-          </Link>
-        ))}
-      </nav>
-      <div className={classes.grow} />
-      {/* <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder="Search credentials…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </div> */}
       <div className={classes.sectionDesktop}>
-        {/* <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton> */}
         <IconButton
           edge="end"
           aria-label="my account"
@@ -277,21 +256,37 @@ export default function IssuerHeader({ user, updateUser }) {
           aria-haspopup="true"
           onClick={handleProfileMenuOpen}
           color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-      </div>
-      <div className={classes.sectionMobile}>
-        <IconButton
-          aria-label="show more"
-          aria-controls={mobileMenuId}
-          aria-haspopup="true"
-          onClick={handleMobileMenuOpen}
-          color="inherit"
-        >
+          >
+            <AccountCircle />
+          </IconButton>
+        </div>
+        <div className={classes.sectionMobile}>
+          <IconButton
+            aria-label="show more"
+            aria-controls={mobileMenuId}
+            aria-haspopup="true"
+            onClick={handleMobileMenuOpen}
+            color="inherit"
+          >
           <MoreIcon />
         </IconButton>
       </div>
+    </>
+  );
+
+  const AuthedHeader = (
+    <>
+      <nav className={classes.sectionDesktop}>
+        {authLinks.map((link) => (
+          <Link href={link.href} passHref key={link.href}>
+            <a className={link.href === router.pathname ? classes.navLinkActive : classes.navLink}>
+              {link.text}
+            </a>
+          </Link>
+        ))}
+      </nav>
+      <div className={classes.grow} />
+      {AccountCircleButton}
     </>
   );
 
@@ -306,34 +301,8 @@ export default function IssuerHeader({ user, updateUser }) {
           </Link>
         ))}
       </nav>
-      {isRecipient && (
-        <>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="my account"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </>
-      )}
+      <div className={classes.grow} />
+      {AccountCircleButton}
     </>
   );
 
@@ -341,12 +310,12 @@ export default function IssuerHeader({ user, updateUser }) {
     <div className={classes.grow}>
       <AppBar position="static" color="transparent" className={classes.appBar}>
         <Toolbar>
-          <Link href={showAuthedHeader ? '/issuer/dashboard' : '/'} passHref>
+          <Link href={showIssuerHeader ? '/issuer/dashboard' : '/'} passHref>
             <a>
               <img style={{ margin: 0, marginRight: '40px' }} width="103px" height="26px" src={'/static/img/certs-logo.svg'} />
             </a>
           </Link>
-          {showAuthedHeader ? AuthedHeader : UnauthedHeader}
+          {showIssuerHeader ? AuthedHeader : UnauthedHeader}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
