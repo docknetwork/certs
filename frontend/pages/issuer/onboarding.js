@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import Router from 'next/router';
 import dock from '@docknetwork/sdk';
+import fetch from 'isomorphic-unfetch';
 
 import { createNewDockDID } from '@docknetwork/sdk/utils/did';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -169,6 +170,7 @@ function AccountGenerator() {
 
 export default function IssuerOnboarding() {
   const classes = useStyles();
+  const [user] = useAuthed();
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [otherSector, setOtherSector] = useState('');
@@ -207,6 +209,15 @@ export default function IssuerOnboarding() {
   function handleSubmit(e) {
     e.preventDefault();
     setStep(1);
+
+    fetch(`https://cgil0qfca8.execute-api.us-east-2.amazonaws.com/prod/register-email`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email: user.email,
+      }),
+    });
+
     apiPost('user', {
       name,
       entityName: company,
