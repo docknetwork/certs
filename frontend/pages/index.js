@@ -90,6 +90,7 @@ export default function IssuerIndex({ updateUser }) {
       <CredentialModal
         key={showCredential}
         credential={showCredential}
+        credentialId={showCredential && showCredential._id}
         onClose={handleCloseCredential}
         open={!!showCredential}
         canCreatePresentation={false} />
