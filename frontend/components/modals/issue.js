@@ -133,6 +133,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     fontSize: '16px',
     lineHeight: '24px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   recipientLabels: {
     minWidth: '52px',
