@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getUser } from '../services/api';
+import Router from 'next/router';
 
 function getLocalUser() {
   let authUser;
@@ -20,6 +21,8 @@ export async function getUserFromApi() {
     const user = await getUser();
     localStorage.setItem('authUser', JSON.stringify(user));
     return user;
+  } else {
+    throw new Error('No auth token');
   }
 }
 
@@ -45,6 +48,7 @@ export function useAuthed() {
     } catch (e) {
       logout(false);
       setUser(null);
+      Router.push('/');
     }
   }
 

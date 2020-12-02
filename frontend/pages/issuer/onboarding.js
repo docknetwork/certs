@@ -23,6 +23,7 @@ import { AddDIDForm, handleSave } from '../../components/modals/add-did';
 import SendTransactionModal from '../../components/modals/send-transaction';
 import useCustomSnackbar from '../../helpers/snackbar';
 import { apiPost } from '../../services/api';
+import { useAuthed } from '../../helpers/auth';
 
 import { saveChainAccount, saveDID } from '../../services/chain';
 import {
@@ -212,6 +213,10 @@ export default function IssuerOnboarding() {
 
     fetch(`https://cgil0qfca8.execute-api.us-east-2.amazonaws.com/prod/register-email`, {
       method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name,
         email: user.email,
