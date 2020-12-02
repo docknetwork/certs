@@ -92,7 +92,7 @@ export default function IssuerIndex({ updateUser }) {
         credential={showCredential}
         onClose={handleCloseCredential}
         open={!!showCredential}
-        canCreatePresentation={true} />
+        canCreatePresentation={false} />
     </Box>
   );
 }
