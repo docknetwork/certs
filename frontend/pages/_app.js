@@ -1,11 +1,13 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 import Head from 'next/head';
+import Router from 'next/router';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'material-ui-snackbar-provider';
 import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import { title } from './_document';
 
+import { GTMPageView } from '../helpers/gtm';
 import { useAuthed } from '../helpers/auth';
 import Header from '../components/header';
 import CustomSnackbar from '../components/snackbar';
@@ -81,6 +83,12 @@ export default class MyApp extends App {
     }
 
     return { pageProps };
+  }
+
+  componentDidMount() {
+    const handleRouteChange = (url) => GTMPageView(url);
+    Router.events.on('routeChangeComplete', handleRouteChange);
+    // Router.events.off('routeChangeComplete', handleRouteChange);
   }
 
   render() {
