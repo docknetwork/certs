@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import dynamic from 'next/dynamic';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import downloadJSON from '../../helpers/download-json';
 import Credential from '../credential';
@@ -52,13 +53,12 @@ export default function CredentialModal({
       {vc && (
         <>
           {canCreatePresentation && (
-            <Button variant="contained" color="primary" style={{ marginLeft: 'auto' }} onClick={handleCreatePresentation}>
-              Create Presentation
-            </Button>
+            <Tooltip title="Download Presentation">
+              <IconButton aria-label="save" onClick={handleCreatePresentation} className={classes.headerBtn} style={{ marginLeft: 'auto' }}>
+                <SaveAltIcon />
+              </IconButton>
+            </Tooltip>
           )}
-          <IconButton aria-label="save" onClick={handleDownload} className={classes.headerBtn} style={{ marginLeft: 'auto' }}>
-            <SaveAltIcon />
-          </IconButton>
         </>
       )}
     </div>

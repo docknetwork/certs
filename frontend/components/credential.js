@@ -7,6 +7,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Alert from '@material-ui/lab/Alert';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import IconButton from '@material-ui/core/IconButton';
 
 import Fade from 'react-reveal/Fade';
 import moment from 'moment';
@@ -15,6 +18,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import CredentialDisplayJSON from './credential-json-display';
 
 import { getCredential } from '../services/credentials';
+import downloadJSON from '../helpers/download-json';
 import { verifyVC } from '../helpers/vc';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,8 +60,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '4px',
     background: '#444444',
     color: '#FFFFFF',
-    padding: '5px 20px',
+    padding: '5px 20px 60px 20px',
     fontSize: '14px',
+    overflowWrap: 'break-word',
   },
 }));
 
@@ -119,6 +124,10 @@ export default function Credential({
 
   function handleToggleJSONView() {
     setViewJSON(!viewJSON);
+  }
+
+  function handleDownload() {
+    downloadJSON(vc, id);
   }
 
   useEffect(() => {
@@ -183,11 +192,25 @@ export default function Credential({
                     )}
                   </div>
                   {viewJSON ? (
-                    <Paper elevation={10} className={classes.jsonWrapper}>
-                      <pre>
-                        {JSON.stringify(credential.credential, null, 2)}
-                      </pre>
-                    </Paper>
+                    <div style={{ position: 'relative' }}>
+                      <Paper elevation={10} className={classes.jsonWrapper}>
+                        <pre style={{overflowWrap: 'break-word', wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}>
+                          {JSON.stringify(credential.credential, null, 2)}
+                        </pre>
+                      </Paper>
+
+                      <Alert severity="info" style={{
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: '20px',
+                        width: '484px',
+                      }}>
+                        <strong>Keep this JSON private</strong>
+                        <IconButton aria-label="save" onClick={handleDownload} style={{ marginLeft: 'auto', position: 'absolute', right: '5px', top: '0' }}>
+                          <SaveAltIcon />
+                        </IconButton>
+                      </Alert>
+                    </div>
                   ) : (
                     <Paper elevation={10} className={classes.scaleCredWrapper}>
                       <CredentialDisplayJSON credential={credential.credential} schema={credential.template} receiver={{

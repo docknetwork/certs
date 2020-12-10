@@ -7,6 +7,8 @@ import FormControl from '@material-ui/core/FormControl';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import useCustomSnackbar from '../../helpers/snackbar';
 import { createAndSignPresentation, getKeypairByAddress, verifyVC } from '../../helpers/vc';
@@ -130,63 +132,40 @@ export default function CreatePresentationModal(props) {
     props.onClose(presentation);
   }
 
-  const actions = presentation ? (
-    <>
-      <Button autoFocus variant="contained" color="primary" onClick={handleDownload}>
-        Download Presentation
-      </Button>
-    </>
-  ) : (
+  const actions = presentation ? null : (
     <>
       <Button onClick={() => props.onClose()}>
         Cancel
       </Button>
       <Button autoFocus variant="contained" color="primary" onClick={handleSave} disabled={!did || isSubmitting || !didMatches}>
-        Create Presentation
+        Sign Presentation
       </Button>
     </>
   );
 
   return (
-    <Dialog title={presentation ? 'Download Verifiable Presentation' : 'Create Verifiable Presentation'} actions={actions} maxWidth="sm" {...props}>
+    <Dialog title="Download Presentation" actions={actions} maxWidth="sm" {...props}>
       {presentation ? (
-        <>
-          <Typography>
-            Your presentation has been created, you may want to make a note of the challenge and domain below incase the verifier asks/has asked for it. You can download your presentation now.
+        <center>
+          <br />
+          <CheckIcon fontSize="large" />
+          <br /><br />
+          <Typography variant="h5" gutterBottom>
+            Successfully created
           </Typography>
-
-          <br />
-
-          <FormControl fullWidth className={classes.formControl}>
-            <TextField
-              id="challenge"
-              label="Challenge"
-              fullWidth
-              variant="outlined"
-              value={presentation.proof.challenge}
-              disabled
-              margin="dense"
-            />
-          </FormControl>
-
-          <br />
-
-          <FormControl fullWidth className={classes.formControl}>
-            <TextField
-              id="domain"
-              label="Domain"
-              fullWidth
-              variant="outlined"
-              value={presentation.proof.domain}
-              disabled
-              margin="dense"
-            />
-          </FormControl>
-        </>
+          <Typography gutterBottom>
+            Now download and share your credential presentation.
+          </Typography>
+          <br /><br />
+          <Button autoFocus variant="contained" color="primary" onClick={handleDownload} startIcon={<SaveAltIcon />}>
+            Download
+          </Button>
+          <br /><br /><br />
+        </center>
       ) : (
         <>
           <Typography>
-            To create a verifiable presentation for this credential, you must first register or import a DID. If the credential was issued to a specific DID, your DID must match the credential subject DID.
+            To sign and download a presentation for this credential, you need a DID. If the credential was issued to a specific DID, your DID must match the credential subject's DID.
           </Typography>
           <br />
 
