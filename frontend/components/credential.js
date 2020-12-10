@@ -194,7 +194,7 @@ export default function Credential({
                   {viewJSON ? (
                     <div style={{ position: 'relative' }}>
                       <Paper elevation={10} className={classes.jsonWrapper}>
-                        <pre style={{overflowWrap: 'break-word', wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}>
+                        <pre style={{ overflowWrap: 'break-word', wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
                           {JSON.stringify(credential.credential, null, 2)}
                         </pre>
                       </Paper>
@@ -206,7 +206,9 @@ export default function Credential({
                         width: '484px',
                       }}>
                         <strong>Keep this JSON private</strong>
-                        <IconButton aria-label="save" onClick={handleDownload} style={{ marginLeft: 'auto', position: 'absolute', right: '5px', top: '0' }}>
+                        <IconButton aria-label="save" onClick={handleDownload} style={{
+                          marginLeft: 'auto', position: 'absolute', right: '5px', top: '0',
+                        }}>
                           <SaveAltIcon />
                         </IconButton>
                       </Alert>

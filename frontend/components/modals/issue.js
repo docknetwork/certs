@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '24px',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
   },
   recipientLabels: {
     minWidth: '52px',

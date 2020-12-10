@@ -30,6 +30,8 @@ import {
   ensureConnection, registerNewDIDUsingPair,
 } from '../../helpers/vc';
 
+const emailSubscribeURL = 'https://cgil0qfca8.execute-api.us-east-2.amazonaws.com/prod/';
+
 const useStyles = makeStyles((theme) => ({
   signinRoot: {
     width: '100%',
@@ -211,7 +213,7 @@ export default function IssuerOnboarding() {
     e.preventDefault();
     setStep(1);
 
-    fetch(`https://cgil0qfca8.execute-api.us-east-2.amazonaws.com/prod/register-email`, {
+    fetch('${emailSubscribeURL}register-email', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

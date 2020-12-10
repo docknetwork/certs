@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import Credential from '../../components/credential';
-import downloadJSON from '../../helpers/download-json';
 
 // TODO: render this page server side so that we dont expose json to everyone
 export default function CredentialPage() {
   const router = useRouter();
-  const [vc, setVC] = useState();
   const { id } = router.query;
   return (
     <>
@@ -26,7 +21,7 @@ export default function CredentialPage() {
           </Link>
         </Toolbar>
       </AppBar>
-      <Credential id={id} setVC={setVC} showJSON={false} />
+      <Credential id={id} showJSON={false} />
     </>
   );
 }

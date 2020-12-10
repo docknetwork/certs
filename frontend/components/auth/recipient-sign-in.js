@@ -22,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ className, loadCredentials, updateUser, customError }) {
+export default function ({
+  className, loadCredentials, updateUser, customError,
+}) {
   const router = useRouter();
   const classes = useStyles();
   const [reference, setReference] = useState();

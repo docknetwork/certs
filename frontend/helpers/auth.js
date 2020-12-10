@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
-import { getUser } from '../services/api';
 import Router from 'next/router';
+import { getUser } from '../services/api';
+import logout from './logout';
 
 function getLocalUser() {
   let authUser;
@@ -21,22 +22,12 @@ export async function getUserFromApi() {
     const user = await getUser();
     localStorage.setItem('authUser', JSON.stringify(user));
     return user;
-  } else {
-    throw new Error('No auth token');
   }
+  throw new Error('No auth token');
 }
 
 export function hasAuthToken() {
   return !!localStorage.getItem('authToken');
-}
-
-export function logout(recipient = true) {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('authUser');
-
-  if (recipient) {
-    localStorage.removeItem('recipientRef');
-  }
 }
 
 export function useAuthed() {
@@ -46,9 +37,11 @@ export function useAuthed() {
       const u = await getUserFromApi();
       setUser(u);
     } catch (e) {
-      logout(false);
-      setUser(null);
-      Router.push('/');
+      if (Router.pathname.indexOf('/issuer/') > -1) {
+        logout(false);
+        setUser(null);
+        Router.push('/issuer/');
+      }
     }
   }
 

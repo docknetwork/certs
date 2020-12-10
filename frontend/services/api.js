@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
-import { logout } from '../helpers/auth';
+import logout from '../helpers/logout';
 
 function queryParams(params) {
   if (!params) {

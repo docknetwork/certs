@@ -13,8 +13,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
-
-import { logout } from '../helpers/auth';
+import logout from '../helpers/logout';
 
 const isServer = () => typeof window === 'undefined';
 

@@ -9,9 +9,9 @@ import Fade from 'react-reveal/Fade';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import dynamic from 'next/dynamic';
 import { apiPost } from '../services/api';
 
-import dynamic from 'next/dynamic';
 import RecipientSignIn from '../components/auth/recipient-sign-in';
 import CredentialDisplayJSON from '../components/credential-json-display';
 import { getStorageValue } from '../helpers/localstorage';

@@ -63,7 +63,7 @@ const theme = responsiveFontSizes(createMuiTheme({
 function UserStateWrapper({
   Component, pageProps, router,
 }) {
-  const [user, forceUpdate] = useAuthed();
+  const [user, forceUpdate] = useAuthed(false);
   return (
     <>
       <Header user={user} updateUser={forceUpdate} />
