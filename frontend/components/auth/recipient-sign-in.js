@@ -22,33 +22,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getStorageValue(key) {
-  let localRef;
-  if (typeof localStorage !== 'undefined') {
-    localRef = localStorage.getItem(key);
-    if (localRef === 'null' || localRef === 'undefined') {
-      localRef = null;
-    }
-  }
-  return localRef;
-}
-
-export default function ({ className, setCredentials, updateUser }) {
+export default function ({ className, loadCredentials, updateUser, customError }) {
   const router = useRouter();
   const classes = useStyles();
   const [reference, setReference] = useState();
   const [error, setError] = useState('');
-  const localRef = getStorageValue('recipientRef');
-
-  useEffect(() => {
-    if (!reference) {
-      const ref = (router.query && router.query.reference) || localRef;
-      if (ref) {
-        setReference(ref);
-        loadCredentials(ref);
-      }
-    }
-  }, []);
 
   async function handleSignin(event) {
     if (event) {
@@ -56,29 +34,6 @@ export default function ({ className, setCredentials, updateUser }) {
     }
 
     loadCredentials(reference);
-  }
-
-  async function loadCredentials(ref) {
-    setError(null);
-
-    localStorage.setItem('recipientRef', ref);
-
-    try {
-      const result = await apiPost('recipient', {
-        reference: ref,
-      });
-
-      if (result.length) {
-        updateUser();
-        setCredentials(result);
-      } else {
-        setError('You have not been issued any credentials.');
-        localStorage.removeItem('recipientRef');
-      }
-    } catch (e) {
-      setError('Unable to get credentials, please check your reference.');
-      localStorage.removeItem('recipientRef');
-    }
   }
 
   function handleChangeReference(e) {
@@ -113,15 +68,15 @@ export default function ({ className, setCredentials, updateUser }) {
           fullWidth
           variant="contained"
           color="primary"
-          disabled={!reference || localRef}
+          disabled={!reference}
           className={classes.submit}
         >
           View Credentials
         </Button>
 
-        {error && (
+        {(error || customError) && (
           <MuiAlert severity="error">
-            {error}
+            {error || customError}
           </MuiAlert>
         )}
       </form>

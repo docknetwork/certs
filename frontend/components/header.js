@@ -117,7 +117,7 @@ export default function IssuerHeader({ user, updateUser }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const showIssuerHeader = router.pathname !== '/issuer/onboarding' && router.pathname.indexOf('/issuer/') === 0;
+  const showIssuerHeader = router.pathname !== '/issuer/onboarding' && !!user;
   const isRecipient = !showIssuerHeader;
   const isAuthed = (showIssuerHeader && user) || (isRecipient && (typeof localStorage !== 'undefined' && !!localStorage.getItem('recipientRef')));
 
