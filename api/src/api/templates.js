@@ -1,8 +1,8 @@
 import resource from 'resource-router-middleware';
 import CredentialTemplate from '../models/credential-type';
-import { getUser } from '../utils/user';
+import getUser from '../utils/user';
 
-export default ({ config, db }) => resource({
+export default () => resource({
   id: 'template',
 
   async index(req, res, next) {
@@ -18,7 +18,7 @@ export default ({ config, db }) => resource({
     }
   },
 
-  async update(req, res) {
+  async update(req, res, next) {
     const user = await getUser(req);
     const { body } = req;
     const creator = user._id;
@@ -26,7 +26,7 @@ export default ({ config, db }) => resource({
       await CredentialTemplate.findOneAndUpdate({ _id: req.params.template, creator }, {
         ...body,
       }, { upsert: true });
-  		res.send({ done: true });
+      res.send({ done: true });
     } catch (e) {
       next(e);
     }
@@ -50,7 +50,7 @@ export default ({ config, db }) => resource({
   },
 
   /** DELETE /:id - Delete a given entity */
-  async delete(req, res, next) {
+  async delete(req, res) {
     const user = await getUser(req);
     const { templates } = req.body;
 

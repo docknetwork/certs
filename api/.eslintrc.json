@@ -25,6 +25,8 @@
     "consistent-return": "off",
     "no-param-reassign": "off",
     "no-nested-ternary": "off",
+    "no-return-await": "off",
+    "no-console": "off",
     "react/prop-types": 0
   }
 }

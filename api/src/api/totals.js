@@ -1,4 +1,4 @@
-import { getUser } from '../utils/user';
+import getUser from '../utils/user';
 import Credential from '../models/credential';
 import Receiver from '../models/receiver';
 import CredentialTemplate from '../models/credential-type';

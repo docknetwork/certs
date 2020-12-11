@@ -9,6 +9,5 @@ export const cookie = {
   sameSite: 'strict', // cookie can only be sent from the same domain
 };
 
-export const decryptCookie = async (cookie) => await Iron.unseal(cookie, process.env.ENCRYPTION_SECRET, Iron.defaults);
-
+export const decryptCookie = async (userCookie) => await Iron.unseal(userCookie, process.env.ENCRYPTION_SECRET, Iron.defaults);
 export const encryptCookie = async (userMetadata) => await Iron.seal(userMetadata, process.env.ENCRYPTION_SECRET, Iron.defaults);

@@ -2,12 +2,10 @@ import resource from 'resource-router-middleware';
 import Credential from '../models/credential';
 import CredentialTemplate from '../models/credential-type';
 import Receiver from '../models/receiver';
-import { getUser } from '../utils/user';
+import getUser from '../utils/user';
 import sendEmailTo from '../utils/email';
 
-const facets = [];
-
-export default ({ config, db }) => resource({
+export default () => resource({
   id: 'credential',
 
   /** GET /:id - Return a given entity */
@@ -15,7 +13,7 @@ export default ({ config, db }) => resource({
     try {
       const credential = await Credential.findOne({ _id: req.params.credential });
       if (credential) {
-    		res.json({
+        res.json({
           _id: credential._id,
           template: credential.template,
           credential: credential.credential,
@@ -35,7 +33,10 @@ export default ({ config, db }) => resource({
     try {
       const query = Credential.find({
         creator,
-      }).sort({ created: 'desc' }).populate('template').populate('receiver')
+      })
+        .sort({ created: 'desc' })
+        .populate('template')
+        .populate('receiver')
         .skip(parseInt(offset))
         .limit(parseInt(limit));
       const result = await query.exec();
@@ -46,7 +47,7 @@ export default ({ config, db }) => resource({
   },
 
   /** POST / - Create a new entity */
-  async create(req, res, next) {
+  async create(req, res) {
     const user = await getUser(req);
     const { body } = req;
     const creator = user._id;

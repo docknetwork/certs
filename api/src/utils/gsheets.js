@@ -1,6 +1,10 @@
-const fs = require('fs');
-const readline = require('readline');
-const { google } = require('googleapis');
+/* eslint-disable */
+import fs from 'fs';
+import readline from 'readline';
+import { google } from 'googleapis';
+
+// Set to your own spreadsheet ID and generate new token
+const spreadsheetId = '1TuWda3mOrq_LD9CvmZRgcAMgSHe5Oe57W11CCJbbB_E';
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
@@ -51,7 +55,7 @@ function getNewToken(oAuth2Client, callback) {
 function insertRow(auth, name, company, sector, email, role) {
   const sheets = google.sheets({ version: 'v4', auth });
   sheets.spreadsheets.values.append({
-    spreadsheetId: '1TuWda3mOrq_LD9CvmZRgcAMgSHe5Oe57W11CCJbbB_E',
+    spreadsheetId,
     range: 'Sheet1',
     valueInputOption: 'RAW',
     insertDataOption: 'INSERT_ROWS',

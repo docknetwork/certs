@@ -23,7 +23,6 @@ export default async (req, res, next) => {
 
     // Exchange the DID from Magic for some user data
     const did = magic.utils.parseAuthorizationHeader(req.headers.authorization);
-    const user = await magic.users.getMetadataByToken(did);
 
     /* validate token to ensure request came from the issuer */
     await magic.token.validate(did);
@@ -45,6 +44,9 @@ export default async (req, res, next) => {
 
     /* check if user is already in */
     const signed = await User.findOne({ issuer: claim.iss });
+    if (!signed) {
+      throw new Error('Unable to sign up user');
+    }
 
     /* encrypted cookie details */
     const token = await encryptCookie(userMetadata);

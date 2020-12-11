@@ -7,7 +7,6 @@ import morgan from 'morgan';
 import jsonErrorHandler from 'express-json-error-handler';
 import bodyParser from 'body-parser';
 import initializeDb from './db';
-import middleware from './middleware';
 import api from './api';
 import config from './config.json';
 
@@ -33,9 +32,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // connect to db
 initializeDb((db) => {
-  // internal middleware
-  app.use(middleware({ config, db }));
-
   // api router
   app.use('/api', api({ config, db }));
 

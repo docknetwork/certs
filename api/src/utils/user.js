@@ -1,7 +1,7 @@
 import { decryptCookie } from './cookie';
 import User from '../models/user';
 
-export async function getUser(req) {
+export default async function getUser(req) {
   const authToken = (req.cookies && req.cookies.auth) || req.headers.authorization;
   if (!authToken) {
     throw new Error('No auth token');

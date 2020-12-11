@@ -1,12 +1,12 @@
 import { DockAPI } from '@docknetwork/sdk';
-import { getUser } from '../utils/user';
-import Credential from '../models/credential';
-import Receiver from '../models/receiver';
-import CredentialTemplate from '../models/credential-type';
+
+async function requestBalance(dock, address) {
+  const transfer = dock.api.tx.sudo.sudo(dock.api.tx.balances.setBalance(address, process.env.FAUCET_DRIP_AMOUNT, 0));
+  await dock.signAndSend(transfer, false);
+}
 
 export default async (req, res, next) => {
   try {
-    // const user = await getUser(req);
     const { address, nodeAddress } = req.body;
     if (!address) {
       throw new Error('No address!');
@@ -23,19 +23,13 @@ export default async (req, res, next) => {
     const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);
     dock.setAccount(account);
 
-    // Ensure balance for address is 0
     const accountData = await dock.api.query.system.account(address);
-    if (accountData.data.free == 0) {
-      async function requestBalance() {
-        const transfer = dock.api.tx.sudo.sudo(dock.api.tx.balances.setBalance(address, process.env.FAUCET_DRIP_AMOUNT, 0));
-        await dock.signAndSend(transfer, false);
-      }
-
+    if (accountData.data.free === 0) {
       // try request balance
       try {
-        await requestBalance();
+        await requestBalance(dock, address);
       } catch (e) { // try once more
-        await requestBalance();
+        await requestBalance(dock, address);
       }
     }
 

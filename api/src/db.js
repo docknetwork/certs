@@ -8,6 +8,6 @@ async function connect(callback) {
   callback(db);
 }
 
-export default function (callback) {
+export default function connectWithCallback(callback) {
   connect(callback);
 }

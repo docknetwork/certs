@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { version } from '../../package.json';
 import templates from './templates';
-import facets from './facets';
 import recipient from './recipient';
 import auth from './auth';
 import totals from './totals';
@@ -12,9 +11,6 @@ import users from './users';
 
 export default ({ config, db }) => {
   const api = Router();
-
-  // mount the facets resource
-  api.use('/facets', facets({ config, db }));
 
   // mount the templates resource
   api.use('/template', templates({ config, db }));

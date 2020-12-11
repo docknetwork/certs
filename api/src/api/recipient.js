@@ -1,5 +1,4 @@
 import Credential from '../models/credential';
-import Receiver from '../models/receiver';
 
 export default async (req, res, next) => {
   try {

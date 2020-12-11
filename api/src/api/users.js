@@ -1,9 +1,9 @@
 import resource from 'resource-router-middleware';
-import { getUser } from '../utils/user';
+import getUser from '../utils/user';
 import insertSheetRow from '../utils/gsheets';
 import User from '../models/user';
 
-export default ({ config, db }) => resource({
+export default () => resource({
   id: 'user',
 
   async index(req, res, next) {

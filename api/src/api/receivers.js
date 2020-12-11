@@ -1,12 +1,12 @@
 import resource from 'resource-router-middleware';
 import Receiver from '../models/receiver';
-import { getUser } from '../utils/user';
+import getUser from '../utils/user';
 
 function emailIsValid(email) {
   return (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email));
 }
 
-export default ({ config, db }) => resource({
+export default () => resource({
   id: 'receiver',
 
   async index(req, res, next) {
@@ -23,7 +23,7 @@ export default ({ config, db }) => resource({
   },
 
   /** POST / - Create a new entity */
-  async create(req, res, next) {
+  async create(req, res) {
     const user = await getUser(req);
     const { body } = req;
     const issuer = user._id;
@@ -76,7 +76,7 @@ export default ({ config, db }) => resource({
   },
 
   /** DELETE /:id - Delete a given entity */
-  async delete(req, res, next) {
+  async delete(req, res) {
     const user = await getUser(req);
     const { receivers } = req.body;
 
