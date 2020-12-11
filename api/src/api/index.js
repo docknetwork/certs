@@ -1,5 +1,5 @@
-import { version } from '../../package.json';
 import { Router } from 'express';
+import { version } from '../../package.json';
 import templates from './templates';
 import facets from './facets';
 import recipient from './recipient';
@@ -11,28 +11,28 @@ import receivers from './receivers';
 import users from './users';
 
 export default ({ config, db }) => {
-	let api = Router();
+  const api = Router();
 
-	// mount the facets resource
-	api.use('/facets', facets({ config, db }));
+  // mount the facets resource
+  api.use('/facets', facets({ config, db }));
 
-	// mount the templates resource
-	api.use('/template', templates({ config, db }));
+  // mount the templates resource
+  api.use('/template', templates({ config, db }));
 
-	// mount the templates resource
-	api.use('/credential', credentials({ config, db }));
+  // mount the templates resource
+  api.use('/credential', credentials({ config, db }));
 
-	// mount the receivers resource
-	api.use('/receiver', receivers({ config, db }));
+  // mount the receivers resource
+  api.use('/receiver', receivers({ config, db }));
 
-	// mount the users resource
-	api.use('/user', users({ config, db }));
+  // mount the users resource
+  api.use('/user', users({ config, db }));
 
-	// recipient route
-	api.post('/recipient', recipient);
+  // recipient route
+  api.post('/recipient', recipient);
 
-	// auth route
-	api.post('/auth', auth);
+  // auth route
+  api.post('/auth', auth);
 
   // totals route
   api.get('/totals', totals);
@@ -40,10 +40,10 @@ export default ({ config, db }) => {
   // faucet route
   api.post('/faucet', faucet);
 
-	// perhaps expose some API metadata at the root
-	api.get('/', (req, res) => {
-		res.json({ version });
-	});
+  // perhaps expose some API metadata at the root
+  api.get('/', (req, res) => {
+    res.json({ version });
+  });
 
-	return api;
-}
+  return api;
+};

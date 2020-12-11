@@ -1,37 +1,39 @@
+import resource from 'resource-router-middleware';
 import { getUser } from '../utils/user';
 import insertSheetRow from '../utils/gsheets';
 import User from '../models/user';
-import resource from 'resource-router-middleware';
 
 export default ({ config, db }) => resource({
-	id : 'user',
+  id: 'user',
 
-	async index(req, res, next) {
+  async index(req, res, next) {
     try {
       const user = await getUser(req);
       if (user) {
         return res.json({ authorized: true, user });
       }
     } catch (err) {
-      next(err)
+      next(err);
     }
-	},
+  },
 
-	async create(req, res, next) {
+  async create(req, res, next) {
     try {
       const user = await getUser(req);
       if (user) {
-        const { entityName, name, sector, role } = req.body;
+        const {
+          entityName, name, sector, role,
+        } = req.body;
         insertSheetRow(name, entityName, sector, user.email, role);
         await User.findOneAndUpdate({ _id: user._id }, {
           entityName,
           name,
           sector,
-        }, {upsert: true});
+        }, { upsert: true });
         return res.json({ updated: true });
       }
     } catch (err) {
-      next(err)
+      next(err);
     }
-	},
+  },
 });

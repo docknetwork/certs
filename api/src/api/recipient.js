@@ -6,7 +6,7 @@ export default async (req, res, next) => {
     const { reference } = req.body;
     const query = Credential.find({
       recipientReference: reference,
-    }).sort({created: 'desc'}).populate('template').populate('receiver');
+    }).sort({ created: 'desc' }).populate('template').populate('receiver');
     const result = await query.exec();
     res.send(result);
   } catch (err) {

@@ -4,10 +4,10 @@ import CredentialTemplate from './credential-type';
 import User from './user';
 import Receiver from './receiver';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // include this to avoid error: OverwriteModelError: Cannot overwrite `Todo` model once compiled.
-delete mongoose.connection.models['Credential'];
+delete mongoose.connection.models.Credential;
 
 const CredentialSchema = new Schema({
   created: { type: Date, default: Date.now },

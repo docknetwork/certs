@@ -7,9 +7,9 @@ function emailIsValid(email) {
 }
 
 export default ({ config, db }) => resource({
-	id: 'receiver',
+  id: 'receiver',
 
-	async index(req, res, next) {
+  async index(req, res, next) {
     const user = await getUser(req);
     const issuer = user._id;
     try {
@@ -20,12 +20,12 @@ export default ({ config, db }) => resource({
     } catch (e) {
       next(e);
     }
-	},
+  },
 
-	/** POST / - Create a new entity */
-	async create(req, res, next) {
+  /** POST / - Create a new entity */
+  async create(req, res, next) {
     const user = await getUser(req);
-    const body = req.body;
+    const { body } = req;
     const issuer = user._id;
     const receiver = body;
 
@@ -42,7 +42,7 @@ export default ({ config, db }) => resource({
       existingReceiver = await Receiver.findOne({ issuer, email: receiver.receiverEmail });
     }
 
-    let receiverDID = receiver.receiverDID;
+    const { receiverDID } = receiver;
     if (existingReceiver && !existingReceiver.did) {
       // TODO: search database receivers to see if one exists with a DID registered
       // under the same email address. if so, populate the DID for this existing receiver with that one
@@ -56,7 +56,7 @@ export default ({ config, db }) => resource({
         email: receiver.receiverEmail,
         reference: receiver.receiverRef,
         did: receiverDID,
-      }, {upsert: true});
+      }, { upsert: true });
 
       // existingReceiver
     } else {
@@ -75,20 +75,20 @@ export default ({ config, db }) => resource({
     res.send(existingReceiver);
   },
 
-	/** DELETE /:id - Delete a given entity */
-	async delete(req, res, next) {
+  /** DELETE /:id - Delete a given entity */
+  async delete(req, res, next) {
     const user = await getUser(req);
-    const receivers = req.body.receivers;
+    const { receivers } = req.body;
 
     if (receivers.length) {
       await Receiver.deleteMany({
         _id: {
-          $in: receivers
+          $in: receivers,
         },
         issuer: user._id,
       });
     }
 
-		res.send({ done: true });
-	}
+    res.send({ done: true });
+  },
 });

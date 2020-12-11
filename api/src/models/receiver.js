@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import User from './user';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // include this to avoid error: OverwriteModelError: Cannot overwrite `Receiver` model once compiled.
-delete mongoose.connection.models['Receiver'];
+delete mongoose.connection.models.Receiver;
 
 const ReceiverSchema = new Schema({
   created: { type: Date, default: Date.now },

@@ -1,9 +1,8 @@
+import { DockAPI } from '@docknetwork/sdk';
 import { getUser } from '../utils/user';
 import Credential from '../models/credential';
 import Receiver from '../models/receiver';
 import CredentialTemplate from '../models/credential-type';
-
-import {DockAPI} from '@docknetwork/sdk';
 
 export default async (req, res, next) => {
   try {
@@ -18,7 +17,7 @@ export default async (req, res, next) => {
     const dock = new DockAPI();
 
     await dock.init({
-      address: nodeAddress
+      address: nodeAddress,
     });
 
     const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);
@@ -46,6 +45,6 @@ export default async (req, res, next) => {
       address,
     });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };

@@ -5,9 +5,9 @@ async function connect(callback) {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-	callback(db);
+  callback(db);
 }
 
-export default function(callback) {
+export default function (callback) {
   connect(callback);
 }

@@ -1,14 +1,14 @@
-require('dotenv').config();
-
 import { Magic } from '@magic-sdk/admin';
-import User from "../models/user";
+import { serialize } from 'cookie';
+import User from '../models/user';
 
-import { encryptCookie, cookie } from "../utils/cookie";
-import { serialize } from "cookie";
+import { encryptCookie, cookie } from '../utils/cookie';
+
+require('dotenv').config();
 
 /* save new user to database */
 const signup = async (user) => {
-  let newUser = {
+  const newUser = {
     email: user.email,
     issuer: user.issuer,
   };
@@ -29,7 +29,7 @@ export default async (req, res, next) => {
     await magic.token.validate(did);
 
     /* decode token to get claim obj with data */
-    let claim = magic.token.decode(did)[1];
+    const claim = magic.token.decode(did)[1];
 
     /* get user data from Magic */
     const userMetadata = await magic.users.getMetadataByIssuer(claim.iss);
@@ -59,6 +59,6 @@ export default async (req, res, next) => {
       user: returnUser,
     });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };

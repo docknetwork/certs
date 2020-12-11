@@ -8,17 +8,17 @@ import sendEmailTo from '../utils/email';
 const facets = [];
 
 export default ({ config, db }) => resource({
-	id : 'credential',
+  id: 'credential',
 
-	/** GET /:id - Return a given entity */
-	async read(req, res, next) {
+  /** GET /:id - Return a given entity */
+  async read(req, res, next) {
     try {
-      const credential = await Credential.findOne({_id: req.params.credential});
+      const credential = await Credential.findOne({ _id: req.params.credential });
       if (credential) {
     		res.json({
           _id: credential._id,
           template: credential.template,
-          credential: credential.credential
+          credential: credential.credential,
         });
       } else {
         throw new Error('Not found');
@@ -26,32 +26,36 @@ export default ({ config, db }) => resource({
     } catch (e) {
       next(e);
     }
-	},
+  },
 
-	async index(req, res, next) {
+  async index(req, res, next) {
     const user = await getUser(req);
     const creator = user._id;
     const { limit = 100000, offset = 0 } = req.query;
     try {
       const query = Credential.find({
         creator,
-      }).sort({created: 'desc'}).populate('template').populate('receiver').skip(parseInt(offset)).limit(parseInt(limit));
+      }).sort({ created: 'desc' }).populate('template').populate('receiver')
+        .skip(parseInt(offset))
+        .limit(parseInt(limit));
       const result = await query.exec();
       res.send(result);
     } catch (e) {
       next(e);
     }
-	},
+  },
 
-	/** POST / - Create a new entity */
-	async create(req, res, next) {
+  /** POST / - Create a new entity */
+  async create(req, res, next) {
     const user = await getUser(req);
-    const body = req.body;
+    const { body } = req;
     const creator = user._id;
-    const { credential, template, receiver, sendEmail } = body;
+    const {
+      credential, template, receiver, sendEmail,
+    } = body;
 
     if (!receiver || !template) {
-      throw new Error(`Missing required arguments`);
+      throw new Error('Missing required arguments');
     }
 
     const existingTemplate = await CredentialTemplate.findOne({ creator, _id: template });
@@ -83,5 +87,5 @@ export default ({ config, db }) => resource({
     const query = Credential.findOne({ _id: insertResult._id }).populate('template').populate('receiver');
     const result = await query.exec();
     res.send(result);
-	},
+  },
 });

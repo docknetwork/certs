@@ -3,9 +3,9 @@ import CredentialTemplate from '../models/credential-type';
 import { getUser } from '../utils/user';
 
 export default ({ config, db }) => resource({
-	id : 'template',
+  id: 'template',
 
-	async index(req, res, next) {
+  async index(req, res, next) {
     const user = await getUser(req);
     const creator = user._id;
     try {
@@ -16,25 +16,25 @@ export default ({ config, db }) => resource({
     } catch (e) {
       next(e);
     }
-	},
+  },
 
-	async update(req, res) {
+  async update(req, res) {
     const user = await getUser(req);
-    const body = req.body;
+    const { body } = req;
     const creator = user._id;
     try {
       await CredentialTemplate.findOneAndUpdate({ _id: req.params.template, creator }, {
         ...body,
-      }, {upsert: true});
+      }, { upsert: true });
   		res.send({ done: true });
     } catch (e) {
       next(e);
     }
-	},
+  },
 
-	async create(req, res, next) {
+  async create(req, res, next) {
     const user = await getUser(req);
-    const body = req.body;
+    const { body } = req;
     const creator = user._id;
     CredentialTemplate.create({
       ...body,
@@ -47,22 +47,22 @@ export default ({ config, db }) => resource({
         res.send(result);
       }
     });
-	},
+  },
 
-	/** DELETE /:id - Delete a given entity */
-	async delete(req, res, next) {
+  /** DELETE /:id - Delete a given entity */
+  async delete(req, res, next) {
     const user = await getUser(req);
-    const templates = req.body.templates;
+    const { templates } = req.body;
 
     if (templates.length) {
       await CredentialTemplate.deleteMany({
         _id: {
-          $in: templates
+          $in: templates,
         },
         creator: user._id,
       });
     }
 
-		res.send({ done: true });
-	}
+    res.send({ done: true });
+  },
 });

@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import User from './user';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // include this to avoid error: OverwriteModelError: Cannot overwrite `Todo` model once compiled.
-delete mongoose.connection.models['Template'];
+delete mongoose.connection.models.Template;
 
 const TemplateSchema = new Schema({
   name: { type: String, required: true },
@@ -16,7 +16,7 @@ const TemplateSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: User,
     required: true,
-  }
+  },
 });
 
 module.exports = mongoose.model('Template', TemplateSchema);
