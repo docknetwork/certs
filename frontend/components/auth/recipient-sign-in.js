@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
-
-import { apiPost } from '../../services/api';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -23,12 +20,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ({
-  className, loadCredentials, updateUser, customError,
+  className, loadCredentials, error,
 }) {
-  const router = useRouter();
   const classes = useStyles();
   const [reference, setReference] = useState();
-  const [error, setError] = useState('');
 
   async function handleSignin(event) {
     if (event) {
@@ -76,9 +71,9 @@ export default function ({
           View Credentials
         </Button>
 
-        {(error || customError) && (
+        {error && (
           <MuiAlert severity="error">
-            {error || customError}
+            {error}
           </MuiAlert>
         )}
       </form>

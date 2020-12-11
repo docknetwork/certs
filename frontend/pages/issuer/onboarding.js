@@ -213,7 +213,7 @@ export default function IssuerOnboarding() {
     e.preventDefault();
     setStep(1);
 
-    fetch('${emailSubscribeURL}register-email', {
+    fetch(`${emailSubscribeURL}register-email`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

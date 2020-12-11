@@ -224,7 +224,6 @@ export function DIDSelector({
     try {
       await apiPost('faucet', { address: account.address, nodeAddress });
     } catch (e) {
-      console.error(e);
       snackbar.showError('There was an error requesting balance, trying again in 10s...');
       setTimeout(() => {
         requestBalance(account);
@@ -233,15 +232,9 @@ export function DIDSelector({
     }
     dock.setAccount(account);
 
-    // Double check account has balance
-    let hasBalance = false;
-    const accountData = await dock.api.query.system.account(account.address);
-    hasBalance = accountData.data.free > 0;
-
-    const did = createNewDockDID();
-
+    const newDID = createNewDockDID();
     try {
-      const result = await registerNewDIDUsingPair(did, account);
+      const result = await registerNewDIDUsingPair(newDID, account);
 
       let didSucceed = false;
       result.events.forEach(({ event: { method } }) => {
@@ -251,7 +244,7 @@ export function DIDSelector({
       });
 
       if (didSucceed) {
-        saveDID(did, account.address);
+        saveDID(newDID, account.address);
         snackbar.showSuccess('Registered DID!');
       } else {
         snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');

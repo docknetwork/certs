@@ -14,7 +14,7 @@ import { apiPost } from '../services/api';
 
 import RecipientSignIn from '../components/auth/recipient-sign-in';
 import CredentialDisplayJSON from '../components/credential-json-display';
-import { getStorageValue } from '../helpers/localstorage';
+import getStorageValue from '../helpers/localstorage';
 
 const CredentialModal = dynamic(() => import('../components/modals/credential'));
 
@@ -115,7 +115,7 @@ export default function Index({ updateUser }) {
   return credentials.length <= 0 ? (
     <div className={classes.signinRoot}>
       <Paper variant="outlined" className={classes.signinPaperWrapper}>
-        <RecipientSignIn customError={error} className={classes.signinPaper} loadCredentials={loadCredentials} updateUser={updateUser} />
+        <RecipientSignIn error={error} className={classes.signinPaper} loadCredentials={loadCredentials} updateUser={updateUser} />
       </Paper>
     </div>
   ) : (

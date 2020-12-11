@@ -1,4 +1,4 @@
-export function getStorageValue(key) {
+export default function getStorageValue(key) {
   let localRef;
   if (typeof localStorage !== 'undefined') {
     localRef = localStorage.getItem(key);

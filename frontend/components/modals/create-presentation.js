@@ -2,69 +2,24 @@ import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import useCustomSnackbar from '../../helpers/snackbar';
-import { createAndSignPresentation, getKeypairByAddress, verifyVC } from '../../helpers/vc';
 import downloadJSON from '../../helpers/download-json';
-import { saveChainAccount } from '../../services/chain';
-import KeypairEditor from '../keypair-editor';
+import { createAndSignPresentation, getKeypairByAddress } from '../../helpers/vc';
+
 import Dialog from '../dialog';
-import AccountSelector from '../account-selector';
-import AddAccountModal from './add-account';
-
-import EmptyHero from '../misc/hero';
-import AddDIDModal from './add-did';
-
 import { DIDSelector } from './issue';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    marginBottom: theme.spacing(1),
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  generateButton: {
-    padding: 0,
-    marginLeft: 'auto',
-    marginTop: 'auto',
-    textTransform: 'none',
-    fontSize: '15px',
-    fontWeight: 'normal',
-  },
-  formHeader: {
-    fontWeight: 'normal',
-    fontSize: '18px',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    display: 'flex',
-  },
-}));
-
 export default function CreatePresentationModal(props) {
-  const classes = useStyles();
   const snackbar = useCustomSnackbar();
   const [presentation, setPresentation] = useState();
-  const [account, setAccount] = useState();
-  const [chainAccount, setChainAccount] = useState();
-  const [showAddAccount, setShowAddAccount] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [data, setData] = useState({});
   const [did, setDID] = useState();
   const { credential, id } = props;
   const didMatches = doesDIDMatchCredential();
-
-  function handleChangeAccount(newAccount, newChainAccount) {
-    setAccount(newAccount);
-    setChainAccount(newChainAccount);
-  }
 
   function doesDIDMatchCredential(throwError = false) {
     if (!did || !credential) {
@@ -93,7 +48,7 @@ export default function CreatePresentationModal(props) {
     }
 
     if (!matches && throwError) {
-      throw new Error(`Selected DID does not match subject's DID: ${credentialDID}`);
+      throw new Error('Selected DID does not match subject\'s DID');
     }
     return matches;
   }
@@ -112,19 +67,11 @@ export default function CreatePresentationModal(props) {
         const vp = await createAndSignPresentation([credential], holderKey, did.id);
         setPresentation(vp.toJSON());
       } catch (e) {
-        console.error(e);
         snackbar.showError(e.toString());
       }
 
       setIsSubmitting(false);
     }
-  }
-
-  function handleChange(event) {
-    data[event.target.id] = event.target.value;
-    setData({
-      ...data,
-    });
   }
 
   function handleDownload() {
@@ -165,7 +112,7 @@ export default function CreatePresentationModal(props) {
       ) : (
         <>
           <Typography>
-            To sign and download a presentation for this credential, you need a DID. If the credential was issued to a specific DID, your DID must match the credential subject's DID.
+            To sign and download a presentation for this credential, you need a DID. If the credential was issued to a specific DID, your DID must match the credential subject&apos;s DID.
           </Typography>
           <br />
 

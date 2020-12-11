@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import dynamic from 'next/dynamic';
-import Tooltip from '@material-ui/core/Tooltip';
 
-import downloadJSON from '../../helpers/download-json';
 import Credential from '../credential';
 import Dialog from '../dialog';
 
@@ -41,10 +39,6 @@ export default function CredentialModal({
     setShowCreatePresentation(false);
   }
 
-  function handleDownload() {
-    downloadJSON(vc, credentialId);
-  }
-
   const modalHeader = (
     <div className={classes.headerWrapper}>
       <IconButton aria-label="back" onClick={onClose} className={classes.headerBtn}>
@@ -67,7 +61,6 @@ export default function CredentialModal({
   return (
     <Dialog title={modalHeader} maxWidth="xl" fullScreenBreakpoint="xl" contentProps={{ style: { padding: 0 } }} open={open}>
       <Credential key={credentialId} id={credentialId || (credential && credential._id)} cachedCredential={credential} setVC={setVC} />
-
       {credential && (
         <CreatePresentationModal id={credential._id} credential={vc} open={showCreatePresentation} onClose={handleClosePresentation} />
       )}

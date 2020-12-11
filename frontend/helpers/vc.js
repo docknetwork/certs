@@ -184,9 +184,7 @@ export async function createAndSignPresentation(credentials, holder, holderDID) 
   const compactProof = true;
 
   const vp = new VerifiablePresentation(presentationId);
-  credentials.map((credential) => {
-    vp.addCredential(credential);
-  });
+  credentials.map((credential) => vp.addCredential(credential));
 
   const holderKey = getKeyDoc(holderDID, holder, getVerificationKeyType(holder));
   await vp.sign(holderKey, challenge, domain, resolver, compactProof);
