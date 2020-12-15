@@ -587,7 +587,7 @@ export default function IssueModal(props) {
         </Button>
       ) : (
         <Button variant="contained" color="primary" onClick={handleIssue} disabled={isSubmitting || !template || !did}>
-          {isSubmitting ? 'Please wait...' : 'Issue Credential'}
+          {isSubmitting ? 'Please wait...' : 'Sign & Issue'}
         </Button>
       )}
     </div>
