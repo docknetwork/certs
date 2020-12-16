@@ -229,10 +229,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@docknetwork/sdk@^0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.3.9.tgz#e437bea4e501f7ee4eb3294c06c5bd71102f537b"
-  integrity sha512-zP3MTVC7fvdFJjLmuxE58Of9LoaOxbopRaPeMwpb/0ogJNKSTjo7MVXLuFv0onVLZ4PFbuxYC2hqiuO5Gh4evw==
+"@docknetwork/sdk@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.3.10.tgz#8d88276681e996c3703f70f95825c2b89c0a4fbe"
+  integrity sha512-XGhl830uurimrM8XjwD/w24cThJzEs8WtRvRJHZOpo5mE828HDcBei0fP3HGUaelBvjJsVbws+AAGdJmLcM2jA==
   dependencies:
     "@polkadot/api" "2.1.1"
     "@polkadot/keyring" "3.5.1"
@@ -4380,9 +4380,9 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-"jsonld-signatures@https://github.com/docknetwork/jsonld-signatures":
+"jsonld-signatures@git+https://github.com/docknetwork/jsonld-signatures.git":
   version "6.0.2-0"
-  resolved "https://github.com/docknetwork/jsonld-signatures#b14b6e6078f7a9ffd635f4e0f76f2a5d377e45b7"
+  resolved "git+https://github.com/docknetwork/jsonld-signatures.git#b14b6e6078f7a9ffd635f4e0f76f2a5d377e45b7"
   dependencies:
     base64url "^3.0.1"
     crypto-ld "^3.7.0"

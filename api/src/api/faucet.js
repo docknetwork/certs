@@ -24,7 +24,7 @@ export default async (req, res, next) => {
     dock.setAccount(account);
 
     const accountData = await dock.api.query.system.account(address);
-    if (accountData.data.free === 0) {
+    if (accountData.data.free.toNumber() === 0) {
       // try request balance
       try {
         await requestBalance(dock, address);
