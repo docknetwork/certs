@@ -29,6 +29,13 @@ PORT=8080 npm run dev
 # Start production server:
 PORT=8080 npm start
 ```
+
+Configuring credentials
+-----------------------
+This API uses both the Google Sheets API and the AWS SDK, for writing onboarding information and for sending emails respectively. You must download your Google API credentials and add `credentials.json` into the `/api/` directory of this project. You also need to make sure that you have AWS credentials on your system. See:
+- https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html
+- https://developers.google.com/sheets/api/quickstart/nodejs
+
 Docker Support
 ------
 ```sh
