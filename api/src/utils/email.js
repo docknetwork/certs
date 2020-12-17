@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 
+// TODO: store these configs in .env
+
 // The AWS Region that you want to use to send the email. For a list of
 // AWS Regions where the Amazon Pinpoint API is available, see
 // https://docs.aws.amazon.com/pinpoint/latest/apireference/
@@ -58,6 +60,15 @@ export default function sendEmail(email, recipientName, recipientRef, issuerName
     },
   };
 
+  console.log('sendEmail', params)
+
   // Try to send the email.
-  pinpoint.sendMessages(params);
+  pinpoint.sendMessages(params, function(err, data) {
+    // If something goes wrong, print an error message.
+    if(err) {
+      console.error(err.message);
+    } else {
+      console.log('Email sent! Message ID:', data.MessageId);
+    }
+  });
 }
