@@ -60,8 +60,6 @@ export default function sendEmail(email, recipientName, recipientRef, issuerName
     },
   };
 
-  console.log('sendEmail', params)
-
   // Try to send the email.
   pinpoint.sendMessages(params, function(err, data) {
     // If something goes wrong, print an error message.
