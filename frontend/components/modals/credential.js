@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,11 +49,19 @@ export default function CredentialModal({
       {vc && (
         <>
           {canCreatePresentation && (
-            <Tooltip title="Download Presentation">
-              <IconButton aria-label="save" onClick={handleCreatePresentation} className={classes.headerBtn} style={{ marginLeft: 'auto' }}>
-                <SaveAltIcon />
-              </IconButton>
-            </Tooltip>
+              <Button
+                aria-label="share"
+                startIcon={<SaveAltIcon style={{ fontSize: 30 }} />}
+                endIcon={
+                  <Tooltip title="The presentation is a secure, verifiable format for sharing your credential.">
+                    <HelpOutlineIcon />
+                  </Tooltip>
+                }
+                onClick={handleCreatePresentation}
+                className={classes.headerBtn}
+                style={{ marginLeft: 'auto', textTransform: 'none', fontWeight: 'normal', color: '#6d6d6d' }}>
+                Download Presentation
+              </Button>
           )}
         </>
       )}

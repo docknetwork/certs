@@ -22,6 +22,13 @@ const theme = responsiveFontSizes(createMuiTheme({
     },
   },
   overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontWeight: 'normal',
+        padding: '8px',
+        fontSize: 13,
+      }
+    },
     MuiToolbar: {
       root: {
         minHeight: '56px!important',
