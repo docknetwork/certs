@@ -328,7 +328,7 @@ export default function IssuerOnboarding() {
           variant="contained"
           color="primary"
           className={classes.submit}
-          disabled={!name || !sector || !company}
+          disabled={!name || !sector || !company || !role}
         >
           Continue
         </Button>
