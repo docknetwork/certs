@@ -1,10 +1,12 @@
 /* eslint-disable */
+require('dotenv').config();
+
 import fs from 'fs';
 import readline from 'readline';
 import { google } from 'googleapis';
 
 // Set to your own spreadsheet ID and generate new token
-const spreadsheetId = '1TuWda3mOrq_LD9CvmZRgcAMgSHe5Oe57W11CCJbbB_E';
+const spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID;
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];

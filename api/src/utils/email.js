@@ -1,20 +1,20 @@
-import AWS from 'aws-sdk';
+require('dotenv').config();
 
-// TODO: store these configs in .env
+import AWS from 'aws-sdk';
 
 // The AWS Region that you want to use to send the email. For a list of
 // AWS Regions where the Amazon Pinpoint API is available, see
 // https://docs.aws.amazon.com/pinpoint/latest/apireference/
-const region = 'us-west-2';
+const region = process.env.AWS_PINPOINT_REGION;
 
 // The "From" address. This address has to be verified in Amazon Pinpoint
 // in the region that you use to send email.
-const senderAddress = 'marketing@dock.io';
+const senderAddress = process.env.AWS_PINPOINT_SENDER;
 
 // The Amazon Pinpoint project/application ID to use when you send this message.
 // Make sure that the SMS channel is enabled for the project or application
 // that you choose.
-const appId = '74e0539b9d174cef9fa4b2384dae7f06';
+const appId = process.env.AWS_PINPOINT_APP_ID;
 
 // Specify that you're using a shared credentials file.
 const credentials = new AWS.SharedIniFileCredentials({ profile: 'default' });
@@ -26,7 +26,51 @@ AWS.config.update({ region });
 // Create a new Pinpoint object.
 const pinpoint = new AWS.Pinpoint();
 
-export default function sendEmail(email, recipientName, recipientRef, issuerName) {
+export function sendEmailWithContent(email, subject, content) {
+  // Build parameters for pinpoint email
+  const charset = 'UTF-8';
+  const params = {
+    ApplicationId: appId,
+    MessageRequest: {
+      Addresses: {
+        [email]: {
+          ChannelType: 'EMAIL',
+        },
+      },
+      MessageConfiguration: {
+        EmailMessage: {
+          FromAddress: senderAddress,
+          SimpleEmail: {
+            Subject: {
+              Charset: charset,
+              Data: subject
+            },
+            HtmlPart: {
+              Charset: charset,
+              Data: content
+            },
+            TextPart: {
+              Charset: charset,
+              Data: content
+            }
+          }
+        }
+      }
+    },
+  };
+
+  // Try to send the email.
+  pinpoint.sendMessages(params, function(err, data) {
+    // If something goes wrong, print an error message.
+    if(err) {
+      console.error(err.message);
+    } else {
+      console.log('Email sent! Message ID:', data.MessageId);
+    }
+  });
+}
+
+export default function sendEmail(email, recipientName, recipientRef, issuerName, templateName = 'cert-issued') {
   // Build parameters for pinpoint email
   const params = {
     ApplicationId: appId,
@@ -49,7 +93,7 @@ export default function sendEmail(email, recipientName, recipientRef, issuerName
       },
       TemplateConfiguration: {
         EmailTemplate: {
-          Name: 'cert-issued',
+          Name: templateName,
         },
       },
       MessageConfiguration: {
