@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Router from 'next/router';
@@ -29,9 +29,11 @@ const useStyles = makeStyles((theme) => ({
 export default function IssuerIndex({ user, updateUser }) {
   const classes = useStyles();
 
-  if (user) {
-    Router.push('/issuer/dashboard');
-  }
+  useEffect(() => {
+    if (user) {
+      Router.push('/issuer/dashboard');
+    }
+  }, []);
 
   return (
     <div className={classes.signinRoot}>

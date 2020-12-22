@@ -54,7 +54,7 @@ export default function ({ className, onSignin }) {
         onSignin();
       }
 
-      const gotoOnboarding = authData.new || !authData.user.entityName;
+      const gotoOnboarding = authData.new || !authData.user.name;
       Router.push(gotoOnboarding ? '/issuer/onboarding' : '/issuer/dashboard');
     } else {
       setIsSubmitting(false);
