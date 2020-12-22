@@ -12,7 +12,8 @@ const signup = async (user) => {
     email: user.email,
     issuer: user.issuer,
   };
-  return await new User(newUser).save();
+  const result = await new User(newUser).save();
+  return result;
 };
 
 const magic = new Magic(process.env.MAGIC_SECRET_KEY);
@@ -39,7 +40,7 @@ export default async (req, res, next) => {
     /* Create new user if doesn't exist */
     let returnUser = existingUser;
     if (!existingUser) {
-      returnUser = signup(userMetadata);
+      returnUser = await signup(userMetadata);
     }
 
     /* check if user is already in */
