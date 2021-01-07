@@ -245,6 +245,10 @@ export function DIDSelector({
 
       if (didSucceed) {
         saveDID(newDID, account.address);
+        setDID({
+          id: newDID,
+          controller: account.address,
+        });
         snackbar.showSuccess('Registered DID!');
       } else {
         snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
