@@ -211,6 +211,16 @@ export default function IssuerOnboarding() {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const trimmedName = (name || '').trim();
+    const entityName = (company || '').trim();
+    const trimmedRole = (role || '').trim();
+    const setSector = (otherSector || sector || '').trim();
+    if (!trimmedName || !entityName || !trimmedRole || !setSector) {
+      snackbar.showError('Please fill in all fields')
+      return;
+    }
+
     setStep(1);
 
     fetch(`${emailSubscribeURL}register-email`, {
@@ -226,10 +236,10 @@ export default function IssuerOnboarding() {
     });
 
     apiPost('user', {
-      name,
-      entityName: company,
-      sector: otherSector || sector,
-      role,
+      name: trimmedName,
+      entityName,
+      sector: setSector,
+      role: trimmedRole,
     });
   }
 

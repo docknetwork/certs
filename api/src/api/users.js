@@ -24,6 +24,10 @@ export default () => resource({
         const {
           entityName, name, sector, role,
         } = req.body;
+        if (!entityName || !name || !sector || !role) {
+          throw new Error('Please enter entity name, name, sector and role');
+        }
+
         insertSheetRow(name, entityName, sector, user.email, role);
         await User.findOneAndUpdate({ _id: user._id }, {
           entityName,
