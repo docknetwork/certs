@@ -1,4 +1,4 @@
-import { DockAPI } from '@docknetwork/sdk';
+import dock from '@docknetwork/sdk';
 
 async function requestBalance(dock, address) {
   const transfer = dock.api.tx.sudo.sudo(dock.api.tx.balances.setBalance(address, process.env.FAUCET_DRIP_AMOUNT, 0));
@@ -14,14 +14,20 @@ export default async (req, res, next) => {
 
     const faucetAccountSeed = process.env.FAUCET_ACCOUNT_SEED;
     const faucetAccountType = process.env.FAUCET_ACCOUNT_TYPE;
-    const dock = new DockAPI();
 
-    await dock.init({
-      address: nodeAddress,
-    });
+    if (!dock.isConnected) {
+      await dock.init({
+        address: nodeAddress,
+      });
 
-    const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);
-    dock.setAccount(account);
+      const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);
+      dock.setAccount(account);
+
+      // Subscribe to block results to avoid connection timeouts
+      const unsub = await dock.api.query.timestamp.now((moment) => {
+        console.log(`The last block has a timestamp of ${moment}`);
+      });
+    }
 
     const accountData = await dock.api.query.system.account(address);
     if (accountData.data.free.toNumber() === 0) {
@@ -32,8 +38,6 @@ export default async (req, res, next) => {
         await requestBalance(dock, address);
       }
     }
-
-    dock.disconnect();
 
     return res.json({
       address,
