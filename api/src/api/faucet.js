@@ -1,4 +1,5 @@
 import dock from '@docknetwork/sdk';
+import chainTypes from '../../../types.json';
 
 async function requestBalance(dock, address) {
   const transfer = dock.api.tx.balances.transfer(address, process.env.FAUCET_DRIP_AMOUNT);
@@ -18,6 +19,7 @@ export default async (req, res, next) => {
     if (!dock.isConnected) {
       await dock.init({
         address: nodeAddress,
+        chainTypes,
       });
 
       const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);

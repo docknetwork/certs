@@ -13,6 +13,7 @@ import b58 from 'bs58';
 import { u8aToString, stringToU8a } from '@polkadot/util';
 import { randomAsHex } from '@polkadot/util-crypto';
 import { getChainAccounts } from '../services/chain';
+import chainTypes from '../../types.json';
 
 // Setup resolvers
 const resolvers = {
@@ -26,6 +27,7 @@ export async function ensureConnection() {
   if (!dock.isConnected) {
     await dock.init({
       address: process.env.NEXT_PUBLIC_WSS_NODE_ADDR,
+      chainTypes,
     });
   }
 }
