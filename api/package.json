@@ -36,7 +36,7 @@
     "axios": "0.21.1"
   },
   "dependencies": {
-    "@docknetwork/sdk": "0.3.9",
+    "@docknetwork/sdk": "0.4.4",
     "@hapi/iron": "^6.0.0",
     "@magic-sdk/admin": "^1.2.2",
     "aws-sdk": "^2.793.0",
