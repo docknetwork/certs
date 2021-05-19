@@ -1,13 +1,16 @@
 require('dotenv').config();
 
-// Progressive Web App: Add service worker with network-first strategy.
-// Network-first strategy means that if there is no internet connection,
-// the browser will use files previously saved locally to the user’s device instead.
-// AKA Offline Mode!
-const withOffline = require("next-offline");
-
 const nextConfig = {
+  future: { webpack5: true },
   exportTrailingSlash: true,
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.experiments = {
+	  asyncWebAssembly: true
+	};
+
+    // Important: return the modified config
+    return config;
+  },
   workboxOpts: {
     swDest: "static/service-worker.js",
     runtimeCaching: [
@@ -35,4 +38,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withOffline(nextConfig);
+module.exports = nextConfig;
