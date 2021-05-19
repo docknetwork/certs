@@ -1,7 +1,7 @@
 import dock from '@docknetwork/sdk';
 
 async function requestBalance(dock, address) {
-  const transfer = api.tx.balances.transfer(address, process.env.FAUCET_DRIP_AMOUNT);
+  const transfer = dock.api.tx.balances.transfer(address, process.env.FAUCET_DRIP_AMOUNT);
   await dock.signAndSend(transfer, false);
 }
 
