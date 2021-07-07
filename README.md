@@ -1,5 +1,37 @@
-# Dock W3C Credential Issuing Solution - Certs
+Certs ES6 NextJS Frontend
+==================================
 
-This is Dock's answer to issuing W3C VCDM compliant credentials and presentations. Check out the `frontend` and `api` subfolders for more information.
+This is the frontend implementation of Dock's W3C compliant credential issuing solution. It is built with NextJS/React/ES6 leveraging the Dock SDK.
 
-Live demo can be found at: https://certs.dock.io
+
+Getting Started
+---------------
+
+Create a `.env.local` file with the following contents:
+
+```
+NEXT_PUBLIC_MAGIC_PUBLIC_KEY=YOUR_MAGIC_KEY
+NEXT_PUBLIC_WSS_NODE_ADDR=wss://your-substrate.node
+```
+
+Then run:
+```
+yarn install
+```
+
+And to start a development environment:
+```
+yarn dev
+```
+
+Starting a production server:
+```
+yarn start
+```
+
+Static export:
+```
+yarn build && yarn export
+```
+
+Linting: `yarn lint`
