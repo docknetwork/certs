@@ -28,9 +28,6 @@ export default class MyDocument extends Document {
           />
           {/* End Google Tag Manager */}
 
-          {/* Progressive Web App: Match the width of app’s content with width of viewport for mobile devices */}
-          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-
           {/* Progressive Web App: Have address bar match brand colors */}
           <meta name="theme-color" content="#fff" />
 
@@ -149,15 +146,9 @@ MyDocument.getInitialProps = async (ctx) => {
   });
 
   const initialProps = await Document.getInitialProps(ctx);
-
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
-      <React.Fragment key="styles">
-        {initialProps.styles}
-        {sheets.getStyleElement()}
-      </React.Fragment>,
-    ],
+    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
   };
 };

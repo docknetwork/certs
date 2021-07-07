@@ -1,5 +1,4 @@
 import React from 'react';
-import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -81,29 +80,23 @@ function UserStateWrapper({
   );
 }
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+export default function MyApp(props) {
+  const { Component, pageProps, router } = props;
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
     }
+  }, []);
 
-    return { pageProps };
-  }
-
-  componentDidMount() {
-    const handleRouteChange = (url) => GTMPageView(url);
-    Router.events.on('routeChangeComplete', handleRouteChange);
-    // Router.events.off('routeChangeComplete', handleRouteChange);
-  }
-
-  render() {
-    const { Component, pageProps, router } = this.props;
-    return (
+  return (
       <React.Fragment>
         <Head>
           <title>{title}</title>
+          {/* Progressive Web App: Match the width of app’s content with width of viewport for mobile devices */}
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -112,6 +105,11 @@ export default class MyApp extends App {
           </SnackbarProvider>
         </ThemeProvider>
       </React.Fragment>
-    );
-  }
+  );
 }
+
+MyApp.componentDidMount = function() {
+  const handleRouteChange = (url) => GTMPageView(url);
+  Router.events.on('routeChangeComplete', handleRouteChange);
+  // Router.events.off('routeChangeComplete', handleRouteChange);
+};
