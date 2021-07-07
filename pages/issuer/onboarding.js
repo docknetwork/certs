@@ -215,9 +215,9 @@ export default function IssuerOnboarding() {
     const trimmedName = (name || '').trim();
     const entityName = (company || '').trim();
     const trimmedRole = (role || '').trim();
-    const setSector = (otherSector || sector || '').trim();
-    if (!trimmedName || !entityName || !trimmedRole || !setSector) {
-      snackbar.showError('Please fill in all fields')
+    const userSector = (otherSector || sector || '').trim();
+    if (!trimmedName || !entityName || !trimmedRole || !userSector) {
+      snackbar.showError('Please fill in all fields');
       return;
     }
 
@@ -238,7 +238,7 @@ export default function IssuerOnboarding() {
     apiPost('user', {
       name: trimmedName,
       entityName,
-      sector: setSector,
+      sector: userSector,
       role: trimmedRole,
     });
   }

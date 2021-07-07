@@ -41,7 +41,7 @@ export default function ({ className, onSignin }) {
       setIsSubmitting(false);
       return;
     }
-    const authRequest = await fetch(`/api/auth`, {
+    const authRequest = await fetch('/api/auth', {
       method: 'POST',
       headers: { Authorization: `Bearer ${did}` },
     });

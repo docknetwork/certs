@@ -37,8 +37,8 @@ export default resource({
         .sort({ created: 'desc' })
         .populate('template')
         .populate('receiver')
-        .skip(parseInt(offset))
-        .limit(parseInt(limit));
+        .skip(parseInt(offset, 10))
+        .limit(parseInt(limit, 10));
       const result = await query.exec();
       res.send(result);
     } catch (e) {

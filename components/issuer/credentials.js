@@ -10,9 +10,9 @@ import Table from '../table';
 import EmptyHero from '../misc/hero';
 import { getCredentials } from '../../services/user';
 
-const IssueModal = dynamic(() => import('../../components/modals/issue'));
-const AddTemplateModal = dynamic(() => import('../../components/modals/add-template'));
-const CredentialModal = dynamic(() => import('../../components/modals/credential'));
+const IssueModal = dynamic(() => import('../modals/issue'));
+const AddTemplateModal = dynamic(() => import('../modals/add-template'));
+const CredentialModal = dynamic(() => import('../modals/credential'));
 
 const headCells = [{
   id: 'name', numeric: false, disablePadding: false, label: 'Recipient name',

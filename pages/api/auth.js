@@ -18,7 +18,7 @@ const signup = async (user) => {
   sendEmailWithContent(
     process.env.AWS_PINPOINT_SENDER,
     'New User Signup',
-    `Hello team! A new user has just signed up for the certs demo. Email: ${user.email} Magic DID: ${user.issuer}<br><br>Sheets with onboarding data: https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SPREADSHEET_ID}/edit`
+    `Hello team! A new user has just signed up for the certs demo. Email: ${user.email} Magic DID: ${user.issuer}<br><br>Sheets with onboarding data: https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SPREADSHEET_ID}/edit`,
   );
   return result;
 };

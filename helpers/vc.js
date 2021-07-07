@@ -12,8 +12,8 @@ import b58 from 'bs58';
 
 import { u8aToString, stringToU8a } from '@polkadot/util';
 import { randomAsHex } from '@polkadot/util-crypto';
-import { getChainAccounts } from '../services/chain';
 import nodeTypes from '@docknetwork/node-types';
+import { getChainAccounts } from '../services/chain';
 
 const chainTypes = nodeTypes.spec['dock-pos-test-runtime'].types[0].types; // TEMP until we can pass typesBundle in ApiPromise.create
 
@@ -33,7 +33,7 @@ export async function ensureConnection() {
       keyring: {
         type: 'sr25519',
         ss58Format: 21,
-      }
+      },
     });
   }
 }

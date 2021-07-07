@@ -1,8 +1,7 @@
 require('dotenv').config();
 
 const nextConfig = {
-  future: { webpack5: true },
-  exportTrailingSlash: true,
+  webpack5: true,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.experiments = {
 	  asyncWebAssembly: true

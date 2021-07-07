@@ -59,7 +59,9 @@ export default function CredentialModal({
                 }
                 onClick={handleCreatePresentation}
                 className={classes.headerBtn}
-                style={{ marginLeft: 'auto', textTransform: 'none', fontWeight: 'normal', color: '#6d6d6d' }}>
+                style={{
+                  marginLeft: 'auto', textTransform: 'none', fontWeight: 'normal', color: '#6d6d6d',
+                }}>
                 Download Presentation
               </Button>
           )}

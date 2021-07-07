@@ -1,7 +1,7 @@
 import Credential from '../../models/credential';
 import connectToDB from '../../utils/db';
 
-export default async (req, res, next) => {
+export default async (req, res) => {
   await connectToDB();
   const { reference } = req.body;
   const query = Credential.find({

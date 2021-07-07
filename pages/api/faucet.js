@@ -1,14 +1,14 @@
 import dock from '@docknetwork/sdk';
 import { ensureConnection } from '../../helpers/vc';
 
-async function requestBalance(dock, address) {
+async function requestBalance(address) {
   const amount = process.env.FAUCET_DRIP_AMOUNT.toString();
-  console.log('Faucet request balance:', address, amount)
+  console.log('Faucet request balance:', address, amount);
   const transfer = dock.api.tx.balances.transfer(address, amount);
   await dock.signAndSend(transfer, false);
 }
 
-export default async (req, res, next) => {
+export default async (req, res) => {
   try {
     const { address } = req.body;
     if (!address) {
@@ -25,7 +25,7 @@ export default async (req, res, next) => {
 
     const accountData = await dock.api.query.system.account(address);
     if (accountData.data.free.toNumber() === 0) {
-      await requestBalance(dock, address);
+      await requestBalance(address);
     }
 
     await dock.disconnect();

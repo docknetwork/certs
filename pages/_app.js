@@ -27,7 +27,7 @@ const theme = responsiveFontSizes(createMuiTheme({
         fontWeight: 'normal',
         padding: '8px',
         fontSize: 13,
-      }
+      },
     },
     MuiToolbar: {
       root: {
@@ -100,7 +100,6 @@ export default class MyApp extends App {
 
   render() {
     const { Component, pageProps, router } = this.props;
-
     return (
       <>
         <Head>
