@@ -22,11 +22,9 @@ function authorize(credentials, callback) {
   );
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getNewToken(oAuth2Client, callback);
-    oAuth2Client.setCredentials(JSON.parse(token));
-    callback(oAuth2Client);
-  });
+  const token = process.env.GOOGLE_TOKEN;
+  oAuth2Client.setCredentials(JSON.parse(token));
+  callback(oAuth2Client);
 }
 
 function getNewToken(oAuth2Client, callback) {
@@ -72,12 +70,8 @@ function insertRow(auth, name, company, sector, email, role) {
 }
 
 export default function insertSheetRow(name, company, sector, email, role) {
-  // Load client secrets from a local file.
-  fs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Sheets API.
-    authorize(JSON.parse(content), (auth) => {
-      insertRow(auth, name, company, sector, email, role);
-    });
+  // Authorize a client with credentials, then call the Google Sheets API.
+  authorize(JSON.parse(process.env.GOOGLE_CREDENTIALS), (auth) => {
+    insertRow(auth, name, company, sector, email, role);
   });
 }
