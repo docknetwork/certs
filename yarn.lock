@@ -2266,10 +2266,10 @@
   resolved "https://registry.yarnpkg.com/@docknetwork/node-types/-/node-types-0.4.6.tgz#e7e6c198142f52653b72c948b23a05aa0526e2e0"
   integrity sha512-g8k5vzX2e/W5kqHfsA2yJvLDzh3qaoLq1Q4Jyx+AFmyXLtVtRnjIdFCbqrOHjSda8JKc6FAdggX8SxsnoaJBEg==
 
-"@docknetwork/sdk@0.4.7":
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.4.7.tgz#e2bcbf329db34dcc27fb9bae5a824177cdee7607"
-  integrity sha512-O90RAS6sditnIXYU6cUEdvDcwJCprTxbtpFjwccsjbGK41zoXHfNJjICd85vB7Y6FYF50U09gKPfZJ7AElT61A==
+"@docknetwork/sdk@0.4.8":
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@docknetwork/sdk/-/sdk-0.4.8.tgz#573a5fd30bfa9833febde1f64c0b978838d83e08"
+  integrity sha512-1WGYdHNn9Lt3XdgQBy1pqZ57qn9jvTe5PLQeXm4yxka1srw9NsW71xM4ZwlA/Abs0ZIG1Qroou4vcgFIex3cqg==
   dependencies:
     "@comunica/actor-init-sparql-rdfjs" "^1.19.2"
     "@polkadot/api" "^4.4.2-6"
@@ -2291,7 +2291,6 @@
     base64url "^3.0.1"
     blake2b "^2.1.3"
     bs58 "^4.0.1"
-    credentials-context "^1.0.0"
     deep-equal "^2.0.3"
     did-resolver "^1.1.0"
     dotenv "^8.2.0"
@@ -5020,11 +5019,6 @@ create-react-context@^0.3.0:
   dependencies:
     gud "^1.0.0"
     warning "^4.0.3"
-
-credentials-context@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/credentials-context/-/credentials-context-1.0.0.tgz#a63cb4b7e0a4ca4460d247b7c9370a58b10ebac9"
-  integrity sha512-rF3GPhTUGY58xlpuVRif/1i0BxVpynpmFdGNS81S2ezdKPSKoFke5ZOZWB8ZUvGi8bV8CuDM+ZcM/uf4z0PQVQ==
 
 cross-fetch@^3.0.4, cross-fetch@^3.0.5, cross-fetch@^3.0.6:
   version "3.1.4"
