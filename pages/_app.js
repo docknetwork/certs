@@ -1,10 +1,10 @@
 import React from 'react';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'material-ui-snackbar-provider';
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import { title } from './_document';
 
 import { GTMPageView } from '../helpers/gtm';
@@ -12,7 +12,7 @@ import { useAuthed } from '../helpers/auth';
 import Header from '../components/header';
 import CustomSnackbar from '../components/snackbar';
 
-const theme = responsiveFontSizes(createMuiTheme({
+const theme = responsiveFontSizes(createTheme({
   palette: {
     background: {
       default: '#ffffff',
@@ -101,19 +101,17 @@ export default class MyApp extends App {
   render() {
     const { Component, pageProps, router } = this.props;
     return (
-      <>
+      <React.Fragment>
         <Head>
           <title>{title}</title>
         </Head>
-        <Container>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }} SnackbarComponent={CustomSnackbar}>
-              <UserStateWrapper Component={Component} pageProps={pageProps} router={router} />
-            </SnackbarProvider>
-          </ThemeProvider>
-        </Container>
-      </>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }} SnackbarComponent={CustomSnackbar}>
+            <UserStateWrapper Component={Component} pageProps={pageProps} router={router} />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </React.Fragment>
     );
   }
 }

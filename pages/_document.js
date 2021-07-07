@@ -1,5 +1,7 @@
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, {
+  Html, Head, Main, NextScript,
+} from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
 
 export const title = 'Dock Certs';
@@ -12,7 +14,7 @@ const GTM_ID = 'GTM-MD769WT';
 export default class MyDocument extends Document {
   render() {
     return (
-      <html lang="en">
+      <Html lang="en">
         <Head>
           {/* Google Tag Manager */}
           <script
@@ -132,7 +134,7 @@ export default class MyDocument extends Document {
           />
           {/* End Google Tag Manager (noscript) */}
         </body>
-      </html>
+      </Html>
     );
   }
 }
