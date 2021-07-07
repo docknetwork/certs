@@ -108,7 +108,7 @@ export default function MyApp(props) {
   );
 }
 
-MyApp.componentDidMount = function() {
+MyApp.componentDidMount = function () {
   const handleRouteChange = (url) => GTMPageView(url);
   Router.events.on('routeChangeComplete', handleRouteChange);
   // Router.events.off('routeChangeComplete', handleRouteChange);
