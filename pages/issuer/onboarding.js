@@ -98,36 +98,41 @@ function AccountGenerator() {
     }
     dock.setAccount(account);
 
-    // Double check account has balance
-    let hasBalance = false;
-    const accountData = await dock.api.query.system.account(account.address);
-    hasBalance = accountData.data.free > 0;
+    const interval = setInterval(() => {
+      checkBalance();
+    }, 6000);
 
-    if (hasBalance) {
-      setState(2);
-      const did = createNewDockDID();
+    async function checkBalance() {
+      // Double check account has balance
+      let hasBalance = false;
+      const accountData = await dock.api.query.system.account(account.address);
+      hasBalance = accountData.data.free > 0;
 
-      try {
-        const result = await registerNewDIDUsingPair(did, account);
+      if (hasBalance) {
+        clearInterval(interval);
+        setState(2);
+        const did = createNewDockDID();
 
-        let didSucceed = false;
-        result.events.forEach(({ event: { method } }) => {
-          if (method === 'DidAdded') {
-            didSucceed = true;
+        try {
+          const result = await registerNewDIDUsingPair(did, account);
+
+          let didSucceed = false;
+          result.events.forEach(({ event: { method } }) => {
+            if (method === 'DidAdded') {
+              didSucceed = true;
+            }
+          });
+
+          if (didSucceed) {
+            saveDID(did, account.address);
+            Router.push('/issuer');
+          } else {
+            snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
           }
-        });
-
-        if (didSucceed) {
-          saveDID(did, account.address);
-          Router.push('/issuer');
-        } else {
-          snackbar.showError('Unable to register DID, transaction failed. Perhaps it already exists?');
+        } catch (e) {
+          snackbar.showError(e.toString());
         }
-      } catch (e) {
-        snackbar.showError(e.toString());
       }
-    } else {
-      snackbar.showError('Generated account has no balance, please contact support.');
     }
   }
 
