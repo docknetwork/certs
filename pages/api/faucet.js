@@ -7,7 +7,7 @@ export default async (req, res) => {
       throw new Error('No address!');
     }
 
-    const { status, data } = await axios.post(`https://faucet.dock.io/api/faucet`, {
+    const { data } = await axios.post('https://faucet.dock.io/api/faucet', {
       token: process.env.CAPTCHA_BYPASS_TOKEN,
       address,
     });
