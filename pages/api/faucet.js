@@ -1,12 +1,4 @@
-import dock from '@docknetwork/sdk';
-import { ensureConnection } from '../../helpers/vc';
-
-async function requestBalance(address) {
-  const amount = process.env.FAUCET_DRIP_AMOUNT.toString();
-  console.log('Faucet request balance:', address, amount);
-  const transfer = dock.api.tx.balances.transfer(address, amount);
-  await dock.signAndSend(transfer, false);
-}
+import axios from 'axios';
 
 export default async (req, res) => {
   try {
@@ -15,26 +7,13 @@ export default async (req, res) => {
       throw new Error('No address!');
     }
 
-    const faucetAccountSeed = process.env.FAUCET_ACCOUNT_SEED;
-    const faucetAccountType = process.env.FAUCET_ACCOUNT_TYPE;
-
-    await ensureConnection();
-
-    const account = dock.keyring.addFromUri(faucetAccountSeed, null, faucetAccountType);
-    dock.setAccount(account);
-
-    const accountData = await dock.api.query.system.account(address);
-    if (accountData.data.free.toNumber() === 0) {
-      await requestBalance(address);
-    }
-
-    await dock.disconnect();
-
-    return res.json({
+    const { status, data } = await axios.post(`https://faucet.dock.io/api/faucet`, {
+      token: process.env.CAPTCHA_BYPASS_TOKEN,
       address,
     });
+
+    res.status(200).json(data);
   } catch (err) {
-    console.error(err);
     return res.status(400).json({
       error: err.toString(),
     });
