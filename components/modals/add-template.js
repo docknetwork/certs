@@ -12,11 +12,15 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import { useAuthed } from '../../helpers/auth';
-import { saveTemplate, testTemplate } from '../../services/templates';
+import { saveTemplate } from '../../services/templates';
 import CredentialDisplay from '../credential-display';
 import Dialog from '../dialog';
 
 import useCustomSnackbar from '../../helpers/snackbar';
+
+// Defaulte templates
+import diplomaTemplate from '../../services/default-templates/diploma';
+import blankTemplate from '../../services/default-templates/blank';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -172,11 +176,11 @@ function TemplateEditInfo({ state, setState }) {
 }
 
 const defaultTemplates = [{
-  name: 'Diploma',
-  base: testTemplate,
+  name: 'Blank',
+  base: blankTemplate,
 }, {
-  name: 'Certificate (Soon)',
-  disabled: true,
+  name: 'Diploma',
+  base: diplomaTemplate,
 }, {
   name: 'ID (Soon)',
   disabled: true,
@@ -198,8 +202,8 @@ export default function AddTemplateModal({ onClose, open, template }) {
     setCredential(null);
   }
 
-  async function handleTemplateClick() {
-    setCredential(testTemplate);
+  function handleTemplateClick(template) {
+    setCredential(template.base || blankTemplate);
   }
 
   async function handleSave() {
@@ -247,7 +251,7 @@ export default function AddTemplateModal({ onClose, open, template }) {
           </Box>
           <Grid container spacing={4} style={{ margin: '0 auto' }} alignItems="center" justify="center">
             {defaultTemplates.map((defaultTemplate, index) => (
-              <Grid item xs={3} sm={3} md={3} key={index} index={index} className={classes.templatePreviewWrapper} onClick={!defaultTemplate.disabled && handleTemplateClick}>
+              <Grid item xs={3} sm={3} md={3} key={index} index={index} className={classes.templatePreviewWrapper} onClick={() => !defaultTemplate.disabled &&handleTemplateClick(defaultTemplate)}>
                 <Paper variant="outlined" className={defaultTemplate.disabled ? classes.templatePreviewPaperDisabled : classes.templatePreviewPaper}>
                   {defaultTemplate.base && (
                     <CredentialDisplay schema={defaultTemplate.base} scale={0.36} />
