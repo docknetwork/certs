@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import EditIcon from '@material-ui/icons/Edit';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -119,8 +120,27 @@ function TemplateFieldEdit({ state, setState }) {
   const [user] = useAuthed();
   const [editField, setEditField] = useState();
 
+  function handleAddNewField() {
+    state.fields.push({
+      gutter: false,
+      type: 'body1',
+      default: 'My text field',
+      label: 'My field',
+    });
+    setState({
+      ...state,
+    });
+  }
+
   function handleCloseEditField() {
     setEditField(null);
+  }
+
+  function handleClickDeleteField(fieldIndex) {
+    state.fields.splice(fieldIndex, 1);
+    setState({
+      ...state,
+    });
   }
 
   function handleClickFieldEdit(field) {
@@ -215,10 +235,18 @@ function TemplateFieldEdit({ state, setState }) {
                                   endAdornment: (
                                     <InputAdornment position="end">
                                       <IconButton
+                                        size="small"
                                         aria-label="edit this field"
                                         onClick={() => handleClickFieldEdit(field)}
                                       >
                                         <EditIcon />
+                                      </IconButton>
+                                      <IconButton
+                                        size="small"
+                                        aria-label="delete this field"
+                                        onClick={() => handleClickDeleteField(index)}
+                                      >
+                                        <DeleteForeverIcon />
                                       </IconButton>
                                     </InputAdornment>
                                   ),
@@ -235,6 +263,12 @@ function TemplateFieldEdit({ state, setState }) {
               )}
             </Droppable>
           </DragDropContext>
+
+          <br />
+
+          <Button fullWidth color="primary" variant="contained" onClick={handleAddNewField}>
+            Add New Field
+          </Button>
         </Box>
 
         </Grid>
