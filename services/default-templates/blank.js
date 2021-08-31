@@ -9,7 +9,6 @@ export default {
   }, {
     type: 'h5',
     gutter: true,
-    dynamic: true,
     default: '{name}',
     label: 'Display Name',
     jsonField: 'name',
