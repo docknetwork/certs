@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,13 +7,11 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import useCustomSnackbar from '../../helpers/snackbar';
-import { saveReceiver } from '../../services/credentials';
 import Dialog from '../dialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +64,7 @@ const jsonFieldTypes = [
 export default function EditReceiverModal(props) {
   const classes = useStyles();
   const snackbar = useCustomSnackbar();
-  const { receiver, field } = props;
+  const { field } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [data, setData] = useState(field || {});
 
@@ -150,8 +148,8 @@ export default function EditReceiverModal(props) {
               onChange={handleChangeType}
               label="Type"
               >
-              {typographyTypes.map((type, index) => (
-                <MenuItem value={type}>{type}</MenuItem>
+              {typographyTypes.map((type) => (
+                <MenuItem key={type} value={type}>{type}</MenuItem>
               ))}
               </Select>
           </FormControl>
@@ -184,15 +182,15 @@ export default function EditReceiverModal(props) {
               placeholder=""
               >
               <MenuItem value="" disabled>None</MenuItem>
-              {jsonFieldTypes.map((type, index) => (
-                <MenuItem value={type}>{type}</MenuItem>
+              {jsonFieldTypes.map((type) => (
+                <MenuItem key={type} value={type}>{type}</MenuItem>
               ))}
               </Select>
           </FormControl>
         </div>
 
         <FormControlLabel
-          control={<Checkbox col0r="primary" checked={data && data.gutter || false} onChange={handleChangeGutter} id="gutter" name="gutter" />}
+          control={<Checkbox col0r="primary" checked={(data && data.gutter) || false} onChange={handleChangeGutter} id="gutter" name="gutter" />}
           label="Gutter Margin"
         />
       </ValidatorForm>

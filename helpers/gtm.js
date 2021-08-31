@@ -1,8 +1,10 @@
-export const GTMPageView = (url) => {
+export default function GTMPageView(url) {
   const pageEvent = {
     event: 'pageview',
     page: url,
   };
-  window && window.dataLayer && window.dataLayer.push(pageEvent);
+  if (window && window.dataLayer) {
+    window.dataLayer.push(pageEvent);
+  }
   return pageEvent;
-};
+}

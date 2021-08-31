@@ -95,17 +95,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const grid = 8;
-
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   paddingTop: 16,
-
-  // change background colour if dragging
   background: isDragging ? 'lightgreen' : 'transparent',
-
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
@@ -114,12 +107,10 @@ const getListStyle = (isDraggingOver) => ({
   width: '100%',
 });
 
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-
   return result;
 };
 
@@ -171,7 +162,7 @@ function TemplateFieldEdit({ state, setState }) {
             Template content
           </Typography>
           <Typography variant="body2">
-            Here you can edit your template's content and input fields. Available variables <strong>{'{name}'}</strong>, <strong>{'{date}'}</strong>
+            Here you can edit your template&apos;s content and input fields. Available variables <strong>{'{name}'}</strong>, <strong>{'{date}'}</strong>
           </Typography>
           <br />
 
@@ -192,14 +183,14 @@ function TemplateFieldEdit({ state, setState }) {
 
                     return (
                       <Draggable key={field.label} draggableId={field.label} index={index}>
-                        {(provided, snapshot) => (
+                        {(providedc, snapshotc) => (
                           <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
+                            ref={providedc.innerRef}
+                            {...providedc.draggableProps}
+                            {...providedc.dragHandleProps}
                             style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
+                              snapshotc.isDragging,
+                              providedc.draggableProps.style,
                             )}
                           >
                             <FormControl key={index} fullWidth className={classes.formControl}>
@@ -318,8 +309,8 @@ export default function AddTemplateModal({ onClose, open, template }) {
     setCredential(null);
   }
 
-  function handleTemplateClick(template) {
-    setCredential(template.base || blankTemplate);
+  function handleTemplateClick(selectedTemplate) {
+    setCredential(selectedTemplate.base);
   }
 
   async function handleSave() {

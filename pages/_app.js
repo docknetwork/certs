@@ -6,7 +6,7 @@ import { SnackbarProvider } from 'material-ui-snackbar-provider';
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import { title } from './_document';
 
-import { GTMPageView } from '../helpers/gtm';
+import GTMPageView from '../helpers/gtm';
 import { useAuthed } from '../helpers/auth';
 import Header from '../components/header';
 import CustomSnackbar from '../components/snackbar';
